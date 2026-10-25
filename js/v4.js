@@ -23,7 +23,11 @@ if(stage){
    slide.dataset.position=String(distance);
    const isCurrent=i===active;
    slide.setAttribute("aria-hidden",String(!isCurrent));
-   slide.inert=!isCurrent;
+   slide.inert=Math.abs(distance)>1;
+   slide.querySelectorAll("a,button").forEach(el=>{
+    if(isCurrent){el.removeAttribute("tabindex");el.removeAttribute("aria-hidden")}
+    else{el.setAttribute("tabindex","-1");el.setAttribute("aria-hidden","true")}
+   });
    slide.classList.toggle("is-active",isCurrent);
   });
   dots.forEach((dot,i)=>{
@@ -34,6 +38,12 @@ if(stage){
   setHeight();
   if(hash)history.replaceState(null,"","#chapter-"+(active+1));
  }
+ stage.addEventListener("click",event=>{
+  const hit=event.target.closest("[data-v4-panel]");
+  if(!hit)return;
+  const selected=Number(hit.dataset.v4Panel);
+  if(selected!==active && !hit.inert){event.preventDefault();go(selected)}
+ });
  document.getElementById("v4-prev")?.addEventListener("click",()=>go(active-1));
  document.getElementById("v4-next")?.addEventListener("click",()=>go(active+1));
  dots.forEach(button=>button.addEventListener("click",()=>go(Number(button.dataset.v4Goto))));
