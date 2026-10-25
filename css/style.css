@@ -352,3 +352,33 @@
 .story-showcase__visual img{transition:none!important}
 .story-progress__fill{transition:none!important}
 }
+
+/* V3 homepage: independent portrait, no text over the face */
+.hero__portrait-stage{border-radius:4px;overflow:hidden;box-shadow:0 15px 70px #00000028;background:radial-gradient(ellipse 65% 85% at 50% 44%,#554536 0%,#2F302A 70%,#21221F 100%)}
+.hero__portrait-stage:after{content:"";position:absolute;inset:55% 0 0;background:linear-gradient(transparent,#161714AA);pointer-events:none;z-index:3}
+.hero__photo-caption{position:absolute;bottom:18px;left:22px;font-size:9px;letter-spacing:.19em;color:#D9BD9F;z-index:4}
+.hero__portrait-stage .hero__portrait{width:100%;height:100%;object-fit:contain;object-position:center bottom;-webkit-mask-image:linear-gradient(#000 0%,#000 82%,transparent 100%);mask-image:linear-gradient(#000 0%,#000 82%,transparent 100%)}
+.hero__intro{max-width:61%;text-shadow:0 1px 7px #0002}
+.hero__discover{color:#F6C79F}
+.hero__bottom{z-index:5}
+.hero__title{position:relative}
+@media(max-width:1000px){.hero__intro{max-width:65%}.hero__portrait-stage{width:39%;right:4%;height:48%;top:29%}}
+@media(max-width:720px){
+ .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-start}
+ .hero__top{order:1;padding-top:clamp(140px,17svh,168px)}
+ .hero__intro{max-width:none;text-shadow:none}
+ .hero__portrait-stage{order:2;position:relative;top:auto;left:auto;right:auto;flex-shrink:0;transform:none!important;width:calc(100% - 40px);height:clamp(340px,94vw,540px);margin:34px auto 0;border:1px solid #FFFFFF22}
+ .hero__photo-backdrop{width:90%;left:5%}
+ .hero__portrait-stage .hero__portrait{object-fit:contain;object-position:center bottom}
+ .hero__bottom{order:3;margin-top:0;padding-top:38px;padding-bottom:60px}
+ .hero__title{white-space:normal;overflow:visible;font-size:clamp(50px,12.6vw,86px);letter-spacing:-.105em;line-height:1.13;gap:.14em}
+ .hero__title-clip{overflow:hidden}
+ .hero__meta{align-items:center;gap:12px}
+ .hero__meta p{max-width:250px}
+ .hero__discover{margin-top:26px}
+}
+@media(max-width:390px){
+ .hero__portrait-stage{height:380px}
+ .hero__title{font-size:12.1vw}
+ .hero__photo-caption{bottom:13px;left:15px}
+}
