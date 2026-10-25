@@ -47,15 +47,13 @@ function initStory(){
    const project=DATA.projects.find(p=>p.slug===slug);
    if(!project||!cover||!title||!desc||!link)return;
    buttons.forEach(b=>{const selected=b.dataset.storyProject===slug;b.classList.toggle("is-active",selected);b.setAttribute("aria-pressed",String(selected))});
-   if(!reduced)cover.classList.add("is-swapping");
-   const apply=()=>{
-     cover.src=project.cover;cover.alt="Original concept artwork for "+project.name+", not an app screenshot";
-     title.textContent=project.name;desc.textContent=project.summary;link.href=projectLink(project);
-     if(num)num.textContent=project.number||"01";
-     cover.classList.remove("is-swapping");
-   };
-   // CSS transitions handle the visual polish; content always updates on user input.
-   apply();
+   cover.src=project.cover;cover.alt="Original concept artwork for "+project.name+", not an app screenshot";
+   title.textContent=project.name;desc.textContent=project.summary;link.href=projectLink(project);
+   if(num)num.textContent=project.number||"01";
+   // Web Animations API: reliable crossfade motion on direct user interaction.
+   if(!reduced&&typeof cover.animate==="function"){
+     cover.animate([{opacity:.4,transform:"scale(1.035)"},{opacity:1,transform:"scale(1)"}],{duration:470,easing:"cubic-bezier(.16,1,.3,1)"});
+   }
  }
  buttons.forEach(button=>button.addEventListener("click",()=>chooseProject(button.dataset.storyProject)));
 }
