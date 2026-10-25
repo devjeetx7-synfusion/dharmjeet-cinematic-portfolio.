@@ -22,3 +22,9 @@ Use ordinary JPEG sRGB, ideally ~1600 px on the longest side and optimized to ro
 - `css/v4.css` owns all V4 responsive layout and animation effects.
 - Project data remains in `js/projects.js`; private repository content is not published.
 - This static website remains prepared for later Blogger XML conversion; it is **not** a Blogger theme yet.
+
+## V5 note
+
+For the hero, a clear portrait with a large subject looks better than a distant figure in a landscape shot. The current CSS blends the image edges but cannot invent a closer camera composition. Use `hero-portrait.jpg` for a separate, recognizable photo; reserve the lake/bike photograph for `lifestyle.jpg`.
+
+Social icons now appear in the navigation and footer. The Instagram account is active. For Facebook, YouTube and X, replace the placeholder `span.v5-social--pending` with an `a` element only after adding a confirmed personal profile link.
