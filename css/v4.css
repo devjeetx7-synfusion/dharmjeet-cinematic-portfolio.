@@ -171,3 +171,11 @@ body.about-v4{background:#1A1B19;color:#F2F0E9}
 .v4-panel{transition:none!important}
 .v4-hero__photo{filter:none}
 }
+
+/* Larger touch targets for chapter selector without visually heavy pips */
+.v4-story__pip{height:36px;position:relative;background:transparent!important;min-height:36px}
+.v4-story__pip::before{content:"";position:absolute;left:0;right:0;top:50%;height:5px;border-radius:9px;transform:translateY(-50%);background:#635A50;transition:background .3s}
+.v4-story__pip[aria-current=step]::before{background:var(--v4-amber)}
+.v4-story__pip:focus-visible{outline:2px solid var(--v4-amber);outline-offset:2px}
+.v4-story__arrow:focus-visible,.v4-panel__project-picker button:focus-visible{outline:2px solid var(--v4-amber);outline-offset:3px}
+@media(max-width:720px){.v4-story__pip{width:18px;min-width:18px;height:44px;min-height:44px}.v4-story__pip[aria-current=step]{width:26px;min-width:26px}}
