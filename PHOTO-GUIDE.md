@@ -1,23 +1,24 @@
-# Personal photos — V3 cinematic portfolio
+# V4 personal image assets (Cinematic Fusion)
 
-The site intentionally does **not** invent personal photographs or re-use the old bike/lake image as the hero. All images below are OPTIONAL. If missing, the site displays its designed typography/artwork fallback rather than a broken image.
+The design uses **full-image masked blends**, not circular crops or hard rectangular photo cards. Files are intentionally optional: missing photos fall back to illustrated typography and colors without pretending a stock photo is Dharmjeet.
 
-Upload JPG files in the `assets/` directory using these exact lowercase filenames:
+Upload under `assets/` with these exact filenames:
 
-| File | Placement | Suggested crop |
+| Filename | Where used | Ideal photo |
 | --- | --- | --- |
-| `hero-portrait.jpg` | Homepage cinematic portrait and About Chapter 01 | Vertical 4:5, clear face, good light, with room around the head |
-| `about-me.jpg` | About page introductory art panel | Vertical 4:5, different portrait/look |
-| `my-journey.jpg` | About Chapter 02 journey block | Vertical 4:5 or 3:4, genuine workspace/coding or personal candid |
-| `lifestyle.jpg` | About Chapter 04 full-width background | Landscape 16:9, outdoor/lifestyle scene |
+| `hero-portrait.jpg` | Homepage, text overlays original portrait | Clear 3:4 or 4:5 face-and-upper-body image, plenty of space around subject |
+| `about-me.jpg` | Chapter 01: The Person | Another genuine portrait, waist-up or full-body |
+| `my-journey.jpg` | Chapter 02: The Journey | Coding/workspace candid, vertical composition |
+| `lifestyle.jpg` | Chapter 04: Beyond the Screen | Real landscape outdoor photo, 16:9 suitable |
 
-The old `assets/profile.jpg` is no longer used by the homepage. Do **not** change image file extensions without changing HTML paths.
+**Avoid:** images with tiny subjects against very bright skies for the homepage; text overlays cannot fix an inherently small subject. The bike/lake photo works better in Chapter 04.
 
-Suggested export: sRGB JPEG at about 1600 px long edge, 80–85% quality, and strip GPS metadata. Real app screenshots should be used only after obtaining them from the app.
+Use ordinary JPEG sRGB, ideally ~1600 px on the longest side and optimized to roughly 200–500KB. Remove GPS metadata before uploading. Do not rename `.png` as `.jpg` without actual conversion.
 
-**Where the photos are used**
-- `index.html`: `hero-portrait.jpg`
-- `about.html`: `about-me.jpg`, `hero-portrait.jpg`, `my-journey.jpg`, `lifestyle.jpg`
-- `assets/*-cover.svg`: original project *concept artwork*, not app screenshots
+## How to edit carousel content
 
-Photo uploads are separate from this code update. No image files were invented.
+- `about.html` has six `data-v4-panel` slides, arranged into a rotating 3D carousel (not a vertical list).
+- `js/v4.js` manages arrow/swipe/keyboard navigation, side-slide clicks and the active project showcase.
+- `css/v4.css` owns all V4 responsive layout and animation effects.
+- Project data remains in `js/projects.js`; private repository content is not published.
+- This static website remains prepared for later Blogger XML conversion; it is **not** a Blogger theme yet.
