@@ -4,7 +4,7 @@ A cinematic, responsive, **Blogger-conversion-friendly** developer portfolio for
 
 **Concept:** editorial typography, smooth scroll-triggered motion, original project-cover illustrations, real GitHub links, verified projects, and accessible native navigation. The visual direction is inspired by modern smooth-scroll portfolios, but this code, composition, typography, colors and artwork are original.
 
-> **Status:** Cinematic static website (v4; rotating six-chapter About carousel and melted hero). **Not yet a Blogger XML theme**. The Blogger adapter and Blogger Post/Page data integration belong to the next migration phase.
+> **Status:** Static website V5: compact cinematic hero, touch-swipable six-chapter About carousel, responsive navigation and social icons. Blogger conversion remains a separate phase. **Not yet a Blogger XML theme**. The Blogger adapter and Blogger Post/Page data integration belong to the next migration phase.
 
 ## Pages
 
@@ -118,3 +118,15 @@ Site source code and original editorial graphics: MIT (`LICENSE`). Font families
 - No extra framework or backend was introduced. Browser code remains HTML/CSS/vanilla JS for later Blogger conversion.
 - V4 implementation is in `css/v4.css`, `js/v4.js`, `about.html`, and `index.html`. See `PHOTO-GUIDE.md` for genuine images and filenames.
 - V4 personal photographs have not been committed. Photo fallback artwork displays until `assets/hero-portrait.jpg`, `assets/about-me.jpg`, `assets/my-journey.jpg`, and `assets/lifestyle.jpg` are uploaded.
+
+
+## V5 Mobile & UI Refinement
+
+- Removed oversized hero-to-introduction gradient spacer, reduced section padding and cut repetitive copy.
+- Homepage headline now two lines. Image blending is masked at the edges; image and typography remain independent layers.
+- About carousel uses approximately 480px minimum mobile cards and 525px desktop cards (content can expand for accessibility).
+- Swipe gestures use `touchstart`/`touchend` with a horizontal threshold and preserve vertical scrolling. Mouse drag, arrow keys, carousel dots and arrow buttons continue to work.
+- All page menus have a hamburger-to-cross state, corrected z-index and touch-friendly controls.
+- Instagram is linked to the known account; Facebook, YouTube and X icons are decorative, disabled placeholders until their real public profile URLs are supplied. Do not invent links or copy URLs from unrelated profiles.
+- Add all future modifications to `css/v5.css` (loaded last after the older design styles) or consolidate carefully when migrating to Blogger.
+- Personal image files still require owner uploads. See PHOTO-GUIDE.md.
