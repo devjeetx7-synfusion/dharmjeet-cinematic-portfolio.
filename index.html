@@ -12,7 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js" defer></script>
 <script src="js/site.js" defer></script>
-</head><body class="index"><a class="focus-skip" href="#main">Skip to content</a>
+<link rel="stylesheet" href="css/v4.css"><script src="js/v4.js" defer></script></head><body class="index index-v4"><a class="focus-skip" href="#main">Skip to content</a>
 <header class="site-header site-header--hero">
  <a href="index.html" class="brand" aria-label="Dharmjeet Singh, home">© Code by Dharmjeet<small>Independent developer</small></a>
  <nav class="header-links" aria-label="Primary navigation"><a href="work.html">Work</a><a href="about.html">About</a><a href="index.html#github">GitHub</a><a href="index.html#contact">Contact</a></nav>
@@ -26,19 +26,19 @@
  <a class="menu-panel__link" href="index.html#contact">Contact <span class="period">.</span></a>
  </div></div><div class="menu-panel__bottom"><span>India / <span id="local-time">IST</span></span><a href="https://github.com/devjeetx7-synfusion" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="mailto:devjeetx7@gmail.com">Email ↗</a></div></div>
  </nav><main id="main">
-<section class="hero" id="top" aria-labelledby="hero-title"><div class="hero__grain" aria-hidden="true"></div><div class="hero__portrait-stage" data-parallax="-5" aria-label="Cinematic portrait">
-  <div class="hero__photo-backdrop" aria-hidden="true"></div>
-  <img class="hero__portrait" src="assets/hero-portrait.jpg" alt="Full portrait of Dharmjeet Singh" loading="eager" decoding="async" fetchpriority="high" onerror="this.parentElement.classList.add('photo-missing');this.remove()">
-  <span class="hero__portrait-watermark" aria-hidden="true">DS.</span><span class="hero__photo-caption" aria-hidden="true">PORTRAIT / DHARMJEET</span>
-</div>
- <div class="container hero__top"><div class="hero__eyeline"><span><span class="status-dot"></span>Available for select opportunities</span><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 4v38M8 27l16 16 16-16" stroke="currentColor" stroke-width="1.4"/></svg></div><h2 class="hero__intro" aria-label="Creating digital experiences through code and imagination">
- <span class="hero__intro-line"><span class="hero__intro-word">Creating digital</span></span>
- <span class="hero__intro-line"><span class="hero__intro-word hero__intro-word--muted">experiences through</span></span>
- <span class="hero__intro-line"><span class="hero__intro-word">code &amp; imagination<span class="hero__intro-punctuation">.</span></span></span>
-</h2><a class="hero__discover" href="#work"><span>Discover my work</span><span class="hero__discover-arrow" aria-hidden="true">↗</span></a></div>
- <div class="container hero__bottom"><h1 id="hero-title" class="hero__title" aria-label="Dharmjeet Singh"><span class="hero__title-clip"><span class="hero__word">Dharmjeet</span></span><span class="hero__title-clip"><span class="hero__word">Singh<span class="period">.</span></span></span></h1>
- <div class="hero__meta"><p>Android developer · AI builder · independent creative technologist, based in India.</p><div class="hero__foot"><span class="label-text">Scroll to explore</span><a href="#intro" class="hero__scroll" aria-label="Scroll to introduction">↓</a></div></div></div>
-</section>
+<section class="v4-hero" id="top" aria-labelledby="hero-title">
+ <div class="v4-hero__glow" aria-hidden="true"></div><div class="v4-hero__noise" aria-hidden="true"></div>
+ <div class="v4-hero__photolayer"><span class="v4-hero__photo-fallback" aria-hidden="true">DS.</span><img class="v4-hero__photo" src="assets/hero-portrait.jpg" alt="Original portrait of Dharmjeet Singh" decoding="async" loading="eager" fetchpriority="high" onerror="this.remove()"></div>
+ <div class="v4-hero__inner"><div class="v4-hero__top">
+  <p class="v4-hero__eyebrow">Independent Android developer · AI Builder · India</p>
+  <h2 class="v4-hero__intro" aria-label="Creating digital experiences through code and imagination">
+   <span class="v4-hero__line"><span>Creating digital</span></span>
+   <span class="v4-hero__line"><span>experiences through</span></span>
+   <span class="v4-hero__line"><span>code &amp; imagination.</span></span>
+  </h2></div>
+  <div class="v4-hero__meta"><h1 id="hero-title" class="v4-hero__name" aria-label="Dharmjeet Singh"><span>Dharmjeet</span> <span>Singh.</span></h1></div>
+  <div class="v4-hero__lower"><p>Building native Android applications and exploring creative software that makes real life easier.</p><a href="#intro" class="v4-hero__scroll">Scroll to explore <i aria-hidden="true">↓</i></a></div>
+ </div></section><div class="v4-hero__continuation" aria-hidden="true"></div>
 <section class="statement section-light" id="intro"><div class="container"><div class="statement__layout"><p class="eyebrow">01 / Introduction</p><div><h2 class="statement__text">I'm Dharmjeet, a developer who turns <strong>real-world problems into</strong> thoughtfully built Android experiences. From daily work tools to ambitious creative software, <strong>I build beyond the code.</strong></h2>
 <div class="statement__footer"><p>My work lives at the intersection of useful engineering, clean interfaces and relentless experimentation.</p><a href="about.html" class="round-link magnetic">More about<br>me ↗</a></div></div></div></div></section>
 <section class="section section-cream work-section" id="work"><div class="container"><div class="section-heading"><div><p class="eyebrow">02 / Selected Work</p><h2 class="headline">Featured<br><em>projects.</em></h2></div><p class="section-heading__aside">A selection of mobile applications, developer tools and interactive experiences.</p></div><div id="featured-grid" class="project-grid" aria-live="polite"></div><div class="projects-cta"><a href="work.html" class="button button-dark">Explore all projects <span>↗</span></a></div></div></section>
