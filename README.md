@@ -4,7 +4,7 @@ A cinematic, responsive, **Blogger-conversion-friendly** developer portfolio for
 
 **Concept:** editorial typography, smooth scroll-triggered motion, original project-cover illustrations, real GitHub links, verified projects, and accessible native navigation. The visual direction is inspired by modern smooth-scroll portfolios, but this code, composition, typography, colors and artwork are original.
 
-> **Status:** Complete static website (v1). **Not yet a Blogger XML theme**. The Blogger adapter and Blogger Post/Page data integration belong to the next migration phase.
+> **Status:** Cinematic static website (v3; six-chapter About storytelling). **Not yet a Blogger XML theme**. The Blogger adapter and Blogger Post/Page data integration belong to the next migration phase.
 
 ## Pages
 
@@ -13,7 +13,7 @@ A cinematic, responsive, **Blogger-conversion-friendly** developer portfolio for
 | `index.html` | Cinematic hero, story, featured projects, public GitHub repositories, expertise, contact |
 | `work.html` | All projects with category filters |
 | `project.html?slug=...` | Individual dynamically rendered project case studies |
-| `about.html` | Personal story and areas of expertise |
+| `about.html` | Six animated story chapters, photo slots, project switcher, scroll progress and personal journey |
 | `js/projects.js` | Verified portfolio content — edit projects here |
 | `js/site.js` | Rendering, accessible menu, GitHub API, scroll reveal, GSAP animations |
 | `css/style.css` | Responsive stylesheet and visual design tokens |
@@ -97,3 +97,14 @@ The 8 case-study entries are based on verified README/project details and produc
 ## Attribution / licensing
 
 Site source code and original editorial graphics: MIT (`LICENSE`). Font families available via Google Fonts are subject to their respective licenses. GSAP, hosted separately on a CDN, uses its own license and is not redistributed in this repository. All project names belong to their respective owners. No Dennis Snellenberg code, images or brand assets have been copied.
+
+## What's new in V3
+
+- Chapter-based About experience: person, journey, projects, lifestyle, mindset, next chapter.
+- Interactive 4-project selector using verified portfolio content.
+- Responsive scroll chapter progress, reveal animations and reduced-motion support.
+- Redesigned homepage portrait layout: text and image never overlay on mobile.
+- Separate portrait assets to replace the disliked old lake image. See [PHOTO-GUIDE.md](PHOTO-GUIDE.md).
+- Warm Amber + Charcoal + Ivory design system; no bright blue accents.
+
+**Photo note:** All personal image filenames are optional, and no photos were actually supplied/committed in V3. Purpose-built fallbacks display until you upload them.
