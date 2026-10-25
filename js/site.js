@@ -6,5 +6,58 @@ function nav(){const btn=$(".menu-toggle"),panel=$("#menu-panel");if(!btn||!pane
 function observe(){const items=$$(".reveal:not(.is-observed)");if(!("IntersectionObserver" in window)||matchMedia("(prefers-reduced-motion:reduce)").matches){items.forEach(x=>x.classList.add("is-visible"));return}const io=new IntersectionObserver((entries,observer)=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("is-visible");observer.unobserve(e.target)}}),{threshold:.09});items.forEach(x=>{x.classList.add("is-observed");io.observe(x)})}
 async function gitHub(){const target=$("#github-repos");if(!target)return;let repos=[];try{const ctrl=new AbortController(),t=setTimeout(()=>ctrl.abort(),6000),response=await fetch("https://api.github.com/users/"+DATA.github+"/repos?sort=updated&per_page=100",{signal:ctrl.signal});clearTimeout(t);if(!response.ok)throw Error("API unavailable");const data=await response.json();repos=data.filter(r=>!r.fork).slice(0,6).map(r=>({name:r.name,url:r.html_url,description:r.description||"Public repository",language:r.language||"Code"}));$("#public-repo-count").textContent=String(data.length);$("#github-data-label").textContent="Live public GitHub repositories"}catch(e){repos=["OfficeMitra","TurtleX","Jump-Adventure","SM-Traders","YouTube-Video-Player","WorkDaily-AppShow"].map(name=>({name,url:"https://github.com/"+DATA.github+"/"+name,description:"Public code & development updates",language:"GitHub"}));$("#public-repo-count").textContent="—";$("#github-data-label").textContent="Selected public repositories"}target.innerHTML=repos.map(r=>'<a class="repo-card reveal" target="_blank" rel="noopener noreferrer" href="'+escape(r.url)+'"><div class="repo-card__top"><span>'+escape(r.language)+'</span><span>↗</span></div><h3>'+escape(r.name)+'</h3><p>'+escape(r.description)+'</p></a>').join("");observe()}
 function motion(){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);if($(".hero__word"))gsap.from(".hero__word",{yPercent:110,opacity:.5,ease:"power3.out",duration:1.1,stagger:.13});$$("[data-parallax]").forEach(el=>gsap.to(el,{yPercent:Number(el.dataset.parallax)||-8,ease:"none",scrollTrigger:{trigger:el.closest("section")||el,start:"top bottom",end:"bottom top",scrub:true}}));if($(".horizontal-marquee"))gsap.to(".horizontal-marquee",{xPercent:-18,ease:"none",scrollTrigger:{trigger:".marquee-band",start:"top bottom",end:"bottom top",scrub:true}})}
+function initStory(){
+ const page=$(".story-page");if(!page)return;
+ const reduced=window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+ const chapters=$("[data-story-chapter]"),storyLinks=$("[data-story-link]"),number=$("#story-active"),fill=$(".story-progress__fill");
+ const reveals=$(".story-reveal");
+ if(!reduced && "IntersectionObserver" in window){
+   reveals.forEach(el=>el.classList.add("story-pending"));
+   const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{
+     if(entry.isIntersecting){entry.target.classList.remove("story-pending");entry.target.classList.add("story-visible");observer.unobserve(entry.target)}
+   })},{threshold:.08,rootMargin:"0px 0px -6% 0px"});
+   reveals.forEach(el=>observer.observe(el));
+ }else{reveals.forEach(el=>el.classList.add("story-visible"))}
+ let ticking=false,lastActive=0;
+ function updateProgress(){
+   ticking=false;
+   let active=1;
+   for(const section of chapters){if(section.getBoundingClientRect().top<=window.innerHeight*.52)active=Number(section.dataset.storyChapter)}
+   active=Math.max(1,Math.min(chapters.length,active));
+   if(active!==lastActive){
+     lastActive=active;
+     if(number)number.textContent=String(active).padStart(2,"0");
+     for(const link of storyLinks){
+       if(Number(link.dataset.storyLink)===active)link.setAttribute("aria-current","step");
+       else link.removeAttribute("aria-current");
+     }
+   }
+   if(fill){
+     const pc=active/Math.max(1,chapters.length)*100;
+     if(window.matchMedia("(max-width:720px)").matches){fill.style.width=pc+"%";fill.style.height="100%"}
+     else{fill.style.height=pc+"%";fill.style.width="100%"}
+   }
+ }
+ const onScroll=()=>{if(ticking)return;ticking=true;window.requestAnimationFrame(updateProgress)};
+ window.addEventListener("scroll",onScroll,{passive:true});
+ window.addEventListener("resize",onScroll,{passive:true});
+ updateProgress();
+ const buttons=$("[data-story-project]"),cover=$("#story-project-cover"),title=$("#story-project-title"),desc=$("#story-project-description"),link=$("#story-project-link"),num=$("#story-project-number");
+ function chooseProject(slug){
+   const project=DATA.projects.find(p=>p.slug===slug);
+   if(!project||!cover||!title||!desc||!link)return;
+   buttons.forEach(b=>{const selected=b.dataset.storyProject===slug;b.classList.toggle("is-active",selected);b.setAttribute("aria-pressed",String(selected))});
+   if(!reduced)cover.classList.add("is-swapping");
+   const apply=()=>{
+     cover.src=project.cover;cover.alt="Original concept artwork for "+project.name+", not an app screenshot";
+     title.textContent=project.name;desc.textContent=project.summary;link.href=projectLink(project);
+     if(num)num.textContent=project.number||"01";
+     cover.classList.remove("is-swapping");
+   };
+   // CSS transitions handle the visual polish; content always updates on user input.
+   apply();
+ }
+ buttons.forEach(button=>button.addEventListener("click",()=>chooseProject(button.dataset.storyProject)));
+}
 function magnets(){if(!matchMedia("(pointer:fine)").matches||matchMedia("(prefers-reduced-motion:reduce)").matches)return;$$(".magnetic").forEach(b=>{b.addEventListener("pointermove",e=>{const r=b.getBoundingClientRect();b.style.transform="translate("+((e.clientX-r.left-r.width/2)*.14)+"px,"+((e.clientY-r.top-r.height/2)*.14)+"px)"});b.addEventListener("pointerleave",()=>b.style.transform="")})}
-document.addEventListener("DOMContentLoaded",()=>{nav();renderProjects();renderCase();gitHub();observe();motion();magnets();$$(".current-year").forEach(x=>x.textContent=new Date().getFullYear());const k=$("#local-time");if(k)k.textContent=new Intl.DateTimeFormat("en-IN",{timeZone:"Asia/Kolkata",hour:"2-digit",minute:"2-digit"}).format(new Date())+" IST";document.documentElement.classList.add("is-ready")})})();
+document.addEventListener("DOMContentLoaded",()=>{nav();initStory();renderProjects();renderCase();gitHub();observe();motion();magnets();$$(".current-year").forEach(x=>x.textContent=new Date().getFullYear());const k=$("#local-time");if(k)k.textContent=new Intl.DateTimeFormat("en-IN",{timeZone:"Asia/Kolkata",hour:"2-digit",minute:"2-digit"}).format(new Date())+" IST";document.documentElement.classList.add("is-ready")})})();
