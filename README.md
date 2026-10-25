@@ -4,7 +4,7 @@ A cinematic, responsive, **Blogger-conversion-friendly** developer portfolio for
 
 **Concept:** editorial typography, smooth scroll-triggered motion, original project-cover illustrations, real GitHub links, verified projects, and accessible native navigation. The visual direction is inspired by modern smooth-scroll portfolios, but this code, composition, typography, colors and artwork are original.
 
-> **Status:** Cinematic static website (v3; six-chapter About storytelling). **Not yet a Blogger XML theme**. The Blogger adapter and Blogger Post/Page data integration belong to the next migration phase.
+> **Status:** Cinematic static website (v4; rotating six-chapter About carousel and melted hero). **Not yet a Blogger XML theme**. The Blogger adapter and Blogger Post/Page data integration belong to the next migration phase.
 
 ## Pages
 
@@ -108,3 +108,13 @@ Site source code and original editorial graphics: MIT (`LICENSE`). Font families
 - Warm Amber + Charcoal + Ivory design system; no bright blue accents.
 
 **Photo note:** All personal image filenames are optional, and no photos were actually supplied/committed in V3. Purpose-built fallbacks display until you upload them.
+
+
+## V4 Cinematic Fusion — October 2026
+
+- Homepage: a single full-bleed charcoal scene; independent text and image layers; image-edge radial masking and lower fade; responsive overlaid portrait typography.
+- About: six chapters in a rotating 3D carousel instead of a vertical list. Keyboard arrows/Home/End, touch swipe, previous/next, progress pips and adjacent-card taps.
+- Featured project preview inside Chapter 03: actual project metadata from `js/projects.js` (illustrative artwork clearly marked, no fake screenshots).
+- No extra framework or backend was introduced. Browser code remains HTML/CSS/vanilla JS for later Blogger conversion.
+- V4 implementation is in `css/v4.css`, `js/v4.js`, `about.html`, and `index.html`. See `PHOTO-GUIDE.md` for genuine images and filenames.
+- V4 personal photographs have not been committed. Photo fallback artwork displays until `assets/hero-portrait.jpg`, `assets/about-me.jpg`, `assets/my-journey.jpg`, and `assets/lifestyle.jpg` are uploaded.
