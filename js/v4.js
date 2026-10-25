@@ -12,8 +12,11 @@ if(stage){
  function setHeight(){
   const slide=slides[active];if(!slide)return;
   const mobile=window.matchMedia("(max-width:720px)").matches;
-  const min=mobile?740:665;
-  stage.style.height=Math.max(min,slide.scrollHeight+22)+"px";
+  const copy=slide.querySelector(".v4-panel__story");
+  const content=copy?copy.scrollHeight:0;
+  const minimum=mobile?480:525;
+  const need=mobile?content+170:content+28;
+  stage.style.height=Math.max(minimum,need)+"px";
  }
  function go(index,hash=true){
   active=(index+n)%n;
@@ -54,24 +57,41 @@ if(stage){
   if(event.key==="Home"){event.preventDefault();go(0)}
   if(event.key==="End"){event.preventDefault();go(n-1)}
  });
- let startX=null,startY=null;
+ // Horizontal gestures should not interfere with natural vertical scrolling.
+ let start=null;
+ function horizontalSwipe(dx,dy){
+  if(Math.abs(dx)<42||Math.abs(dx)<Math.abs(dy)*1.3)return false;
+  go(active+(dx<0?1:-1));
+  return true;
+ }
+ theatre?.addEventListener("touchstart",event=>{
+  const touch=event.touches[0];if(!touch)return;
+  start={x:touch.clientX,y:touch.clientY};
+ },{passive:true});
+ theatre?.addEventListener("touchend",event=>{
+  if(!start)return;
+  const touch=event.changedTouches[0];if(!touch){start=null;return}
+  const dx=touch.clientX-start.x,dy=touch.clientY-start.y;
+  start=null;
+  if(horizontalSwipe(dx,dy))event.preventDefault();
+ },{passive:false});
+ theatre?.addEventListener("touchcancel",()=>{start=null},{passive:true});
+ let mouseStart=null;
  theatre?.addEventListener("pointerdown",event=>{
-  if(event.target.closest("button, a"))return;
-  if(event.pointerType==="mouse"&&event.button!==0)return;
-  startX=event.clientX;startY=event.clientY;
+  if(event.pointerType!=="mouse"||event.button!==0)return;
+  if(event.target.closest("button,a"))return;
+  mouseStart={x:event.clientX,y:event.clientY};
  },{passive:true});
  theatre?.addEventListener("pointerup",event=>{
-  if(startX===null)return;
-  const dx=event.clientX-startX,dy=event.clientY-startY;
-  startX=null;startY=null;
-  if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.25)go(active+(dx<0?1:-1));
+  if(!mouseStart||event.pointerType!=="mouse")return;
+  const dx=event.clientX-mouseStart.x,dy=event.clientY-mouseStart.y;
+  mouseStart=null;horizontalSwipe(dx,dy);
  },{passive:true});
- theatre?.addEventListener("pointercancel",()=>{startX=null;startY=null});
- const ro=typeof ResizeObserver!=="undefined"?new ResizeObserver(()=>setHeight()):null;
- slides.forEach(s=>ro?.observe(s));
+ theatre?.addEventListener("pointercancel",()=>{mouseStart=null},{passive:true});
  window.addEventListener("resize",setHeight,{passive:true});
  const hash=location.hash.match(/^#chapter-([1-6])$/);
  go(hash?Number(hash[1])-1:0,false);
+ window.addEventListener("load",setHeight,{once:true});
  const cover=document.getElementById("v4-project-cover");
  const title=document.getElementById("v4-project-title");
  const caseLink=document.getElementById("v4-project-link");
