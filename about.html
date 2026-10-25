@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#202126"><meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F2F0E9"><meta name="color-scheme" content="light">
 <title>About — Dharmjeet Singh</title><meta name="description" content="About Dharmjeet Singh: Android developer, AI builder and independent creative technologist based in India.">
 <meta property="og:type" content="website"><meta property="og:title" content="About — Dharmjeet Singh"><meta property="og:description" content="About Dharmjeet Singh: Android developer, AI builder and independent creative technologist based in India.">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -12,7 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js" defer></script>
 <script src="js/site.js" defer></script>
-</head><body class="about"><a class="focus-skip" href="#main">Skip to content</a>
+</head><body class="about about-v3"><a class="focus-skip" href="#main">Skip to content</a>
 <header class="site-header ">
  <a href="index.html" class="brand" aria-label="Dharmjeet Singh, home">© Code by Dharmjeet<small>Independent developer</small></a>
  <nav class="header-links" aria-label="Primary navigation"><a href="work.html">Work</a><a href="about.html">About</a><a href="index.html#github">GitHub</a><a href="index.html#contact">Contact</a></nav>
@@ -25,12 +25,154 @@
  <a class="menu-panel__link" href="index.html#github">GitHub <span class="period">.</span></a>
  <a class="menu-panel__link" href="index.html#contact">Contact <span class="period">.</span></a>
  </div></div><div class="menu-panel__bottom"><span>India / <span id="local-time">IST</span></span><a href="https://github.com/devjeetx7-synfusion" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="mailto:devjeetx7@gmail.com">Email ↗</a></div></div>
- </nav><main id="main"><section class="about-top section-light"><div class="container"><p class="eyebrow">A little more / About me</p><h1 class="display">The person<br>behind <span class="period">the code.</span></h1><div class="about-top__row"><p>Curious by nature.<br>Builder by choice.</p><p>I'm Dharmjeet Singh—an independent developer exploring how thoughtful software can make everyday life simpler, more expressive and more connected.</p></div></div></section>
-<section class="about-portrait" aria-label="Abstract monogram artwork representing Dharmjeet Singh"><span class="about-portrait__monogram" data-parallax="-12" aria-hidden="true">DS</span><img class="about-portrait__photo" src="assets/profile.jpg" alt="Portrait of Dharmjeet Singh" loading="lazy" onerror="this.remove()"></section>
-<section class="section section-light"><div class="container"><div class="about-facts"><div><p class="eyebrow">01 / My story</p></div><div><h2>Creating products that matter beyond a screen.</h2><p>I build native Android applications, experiment with AI-enabled ideas and explore digital product experiences. I'm driven by the challenge of turning a concept into something people can actually use.</p><p>From tools for attendance and wages to workforce software, games and mobile development environments, my projects share one principle: make technology feel more human and more useful.</p><div style="margin-top:40px"><a href="work.html" class="button button-dark">Explore my projects <span>↗</span></a></div></div></div></div></section>
-<section class="section section-cream"><div class="container"><p class="eyebrow">02 / Areas of practice</p><h2 class="headline" style="margin-top:20px">Always<br><em>exploring.</em></h2><div class="timeline"><div class="timeline-row"><span>01</span><strong>Android development</strong><span>Kotlin, Java, Jetpack Compose, Android Studio, native mobile architecture.</span></div><div class="timeline-row"><span>02</span><strong>Product engineering</strong><span>Offline-first experiences, useful interfaces, data flows and application workflows.</span></div><div class="timeline-row"><span>03</span><strong>AI and experimentation</strong><span>Exploring creative prompts, intelligent features and emerging tools.</span></div><div class="timeline-row"><span>04</span><strong>Creative web</strong><span>Responsive design systems, Blogger themes, interactions and motion.</span></div></div></div></section></main><footer class="contact-section" id="contact"><div class="container">
- <p class="eyebrow light">Have a project in mind?</p><div class="contact-head"><h2>Let's work<br><span>together.</span></h2><a class="round-link magnetic" href="mailto:devjeetx7@gmail.com?subject=Let's%20build%20something" aria-label="Email Dharmjeet Singh">Get in<br>touch ↗</a></div>
- <p class="contact-sub">An idea, a product, a collaboration—or just a conversation about technology. My inbox is open.</p>
- <div class="contact-buttons"><a class="button button-light" href="mailto:devjeetx7@gmail.com">devjeetx7@gmail.com <span>↗</span></a><a class="button button-light" href="https://github.com/devjeetx7-synfusion" target="_blank" rel="noopener noreferrer">View my GitHub <span>↗</span></a></div>
- <div class="footer-bottom"><p>© <span class="current-year">2026</span> Dharmjeet Singh<br>Designed & built with purpose.</p><div class="footer-social"><a href="https://github.com/devjeetx7-synfusion" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://instagram.com/devjeetx7" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://t.me/synfusion_coder" target="_blank" rel="noopener noreferrer">Telegram ↗</a></div><a href="#main">Back to top ↑</a></div>
- </div></footer></body></html>
+ </nav>
+<main id="main" class="story-page">
+  <aside class="story-progress" aria-label="About chapters">
+    <span class="story-progress__caption">MY STORY</span>
+    <div class="story-progress__count"><span id="story-active">01</span><span> / 06</span></div>
+    <div class="story-progress__track"><span class="story-progress__fill"></span></div>
+    <nav class="story-progress__links">
+      <a href="#chapter-1" data-story-link="1" aria-label="Chapter 1: The Person" aria-current="step">01</a>
+      <a href="#chapter-2" data-story-link="2" aria-label="Chapter 2: The Journey">02</a>
+      <a href="#chapter-3" data-story-link="3" aria-label="Chapter 3: What I Build">03</a>
+      <a href="#chapter-4" data-story-link="4" aria-label="Chapter 4: Beyond the Screen">04</a>
+      <a href="#chapter-5" data-story-link="5" aria-label="Chapter 5: How I Think">05</a>
+      <a href="#chapter-6" data-story-link="6" aria-label="Chapter 6: What Is Next">06</a>
+    </nav>
+  </aside>
+  <section class="story-intro section-light" aria-labelledby="story-title">
+    <div class="container story-intro__grid">
+      <div class="story-intro__copy">
+        <p class="story-kicker story-reveal">ABOUT / THE STORY SO FAR <span class="story-kicker__line"></span> INDIA</p>
+        <h1 id="story-title" class="story-intro__title"><span class="story-title-line"><span class="story-title-word">More than</span></span><span class="story-title-line"><span class="story-title-word">just <em>code.</em></span></span></h1>
+        <div class="story-intro__bottom story-reveal">
+          <p>Hi, I'm Dharmjeet Singh. An Android developer, independent creator and curious mind turning ideas into experiences people can actually use.</p>
+          <a class="story-scroll-link" href="#chapter-1">Discover my story <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+      <div class="story-intro__art story-reveal" aria-label="Portrait artwork">
+        <span class="story-intro__outline" aria-hidden="true">DS</span>
+        <div class="story-intro__photo"><img src="assets/about-me.jpg" alt="Portrait of Dharmjeet Singh" loading="eager" onerror="this.remove()" /></div>
+        <span class="story-intro__sticker">BUILDING<br/>BEYOND<br/>THE CODE ↗</span>
+        <span class="story-intro__index">© DS / 2026</span>
+      </div>
+    </div>
+  </section>
+  <section class="story-chapter story-chapter--person" id="chapter-1" data-story-chapter="1" aria-labelledby="story-person-title">
+    <div class="container">
+      <div class="story-chapter__meta"><span>01 / 06</span><span>THE PERSON</span></div>
+      <div class="story-two-col">
+        <div class="story-media story-media--portrait story-reveal">
+          <div class="story-media__art"><span class="story-media__art-big">D.</span><span class="story-media__art-small">CREATOR / DEVELOPER</span></div>
+          <img src="assets/hero-portrait.jpg" alt="Dharmjeet Singh — original close-up portrait" loading="lazy" onerror="this.remove()" />
+          <span class="story-media__tag">01 — MEET THE MAKER</span>
+        </div>
+        <div class="story-copy">
+          <p class="story-eyebrow story-reveal">MY INTRODUCTION</p>
+          <h2 class="story-heading story-reveal" id="story-person-title">Curious by nature.<br/><em>Builder by choice.</em></h2>
+          <p class="story-copy__lead story-reveal">I believe the best software starts with understanding real problems, not just writing more code.</p>
+          <p class="story-reveal">I'm an independent Android developer and freelancer from Bihar, India. I enjoy shaping ideas into products—from everyday tools to games and experimental software.</p>
+          <div class="story-mini-facts story-reveal">
+            <div><small>FOCUS</small><strong>Android &amp; AI</strong></div>
+            <div><small>WORK</small><strong>Independent / Freelance</strong></div>
+            <div><small>HOME</small><strong>Bihar, India</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="story-chapter story-chapter--journey" id="chapter-2" data-story-chapter="2" aria-labelledby="story-journey-title">
+    <div class="container">
+      <div class="story-chapter__meta"><span>02 / 06</span><span>THE JOURNEY</span></div>
+      <div class="story-journey-grid">
+        <div>
+          <p class="story-eyebrow story-reveal">THERE'S NO PERFECT STARTING POINT</p>
+          <h2 class="story-heading story-reveal" id="story-journey-title">Learn. Build.<br/><em>Repeat.</em></h2>
+          <p class="story-copy__lead story-reveal">A journey driven by curiosity, practice and the belief that every project teaches something new.</p>
+          <div class="story-timeline" aria-label="Development journey milestones">
+            <div class="story-timeline__line" aria-hidden="true"></div>
+            <div class="story-timeline__item story-reveal"><span class="story-timeline__dot"></span><span class="story-timeline__num">01</span><div><h3>Curiosity &amp; learning</h3><p>Building a foundation through science studies and independent exploration.</p></div></div>
+            <div class="story-timeline__item story-reveal"><span class="story-timeline__dot"></span><span class="story-timeline__num">02</span><div><h3>Discovering Android</h3><p>Java, Kotlin, Android Studio and the challenge of making an idea work on a real device.</p></div></div>
+            <div class="story-timeline__item story-reveal"><span class="story-timeline__dot"></span><span class="story-timeline__num">03</span><div><h3>Creating real products</h3><p>Exploring attendance systems, workforce tools, mobile development software and games.</p></div></div>
+            <div class="story-timeline__item story-reveal"><span class="story-timeline__dot"></span><span class="story-timeline__num">04</span><div><h3>Always experimenting</h3><p>Combining software engineering, AI tools and creative product thinking.</p></div></div>
+          </div>
+        </div>
+        <div class="story-journey-art story-reveal">
+          <div class="story-journey-art__grid" aria-hidden="true"></div>
+          <div class="story-journey-art__inner"><span>NOT A<br/>STRAIGHT<br/><em>LINE.</em></span><small>JUST KEEP BUILDING ↗</small></div>
+          <img src="assets/my-journey.jpg" alt="Dharmjeet's development journey" loading="lazy" onerror="this.remove()" />
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="story-chapter story-chapter--work" id="chapter-3" data-story-chapter="3" aria-labelledby="story-work-title">
+    <div class="container">
+      <div class="story-chapter__meta"><span>03 / 06</span><span>WHAT I BUILD</span></div>
+      <div class="story-work-head">
+        <div><p class="story-eyebrow story-reveal">REAL PROJECTS / REAL PROBLEMS</p><h2 class="story-heading story-reveal" id="story-work-title">Ideas into<br/><em>experiences.</em></h2></div>
+        <p class="story-reveal">Each project is a chance to learn, simplify something complicated or create a more useful experience.</p>
+      </div>
+      <div class="story-showcase">
+        <div class="story-showcase__visual story-reveal">
+          <img id="story-project-cover" src="assets/workdaily-cover.svg" alt="Original WorkDaily concept artwork, not an app screenshot" loading="lazy" />
+          <span class="story-showcase__overlay">PROJECT / <span id="story-project-number">01</span></span>
+        </div>
+        <div class="story-showcase__content story-reveal">
+          <div><p class="story-eyebrow">SELECT A PROJECT TO EXPLORE</p><h3 id="story-project-title">WorkDaily</h3><p id="story-project-description">Attendance, wage calculations and financial tracking built with an offline-first mindset.</p></div>
+          <div class="story-project-options" role="group" aria-label="Choose a project">
+            <button class="story-project-option is-active" type="button" data-story-project="workdaily" aria-pressed="true"><span>01</span> WorkDaily <span>↗</span></button>
+            <button class="story-project-option" type="button" data-story-project="officemitra" aria-pressed="false"><span>02</span> Office Mitra <span>↗</span></button>
+            <button class="story-project-option" type="button" data-story-project="turtlex" aria-pressed="false"><span>03</span> TurtleX <span>↗</span></button>
+            <button class="story-project-option" type="button" data-story-project="jump-adventure" aria-pressed="false"><span>04</span> Jump Adventure <span>↗</span></button>
+          </div>
+          <a id="story-project-link" class="story-cta" href="project.html?slug=workdaily">Explore case study <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <p class="story-showcase__note">Artwork is conceptual. Genuine screenshots can be added separately without changing the layout.</p>
+    </div>
+  </section>
+  <section class="story-chapter story-chapter--beyond" id="chapter-4" data-story-chapter="4" aria-labelledby="story-beyond-title">
+    <div class="story-beyond__image" aria-hidden="true"><img src="assets/lifestyle.jpg" alt="" loading="lazy" onerror="this.remove()" /></div>
+    <div class="container story-beyond__inner">
+      <div class="story-chapter__meta"><span>04 / 06</span><span>BEYOND THE SCREEN</span></div>
+      <div class="story-beyond__copy">
+        <p class="story-eyebrow story-reveal">MORE THAN A WORKSPACE</p>
+        <h2 class="story-beyond__title story-reveal" id="story-beyond-title">Not everything<br/>happens <em>behind<br/>a screen.</em></h2>
+        <p class="story-reveal">Outside of code, I make room for ideas, exploration and a fresh perspective. Sometimes stepping away is how the next solution appears.</p>
+      </div>
+      <div class="story-beyond__end story-reveal"><span>CREATIVITY NEEDS SPACE</span><span>↗</span></div>
+    </div>
+  </section>
+  <section class="story-chapter story-chapter--mindset" id="chapter-5" data-story-chapter="5" aria-labelledby="story-mindset-title">
+    <div class="container">
+      <div class="story-chapter__meta"><span>05 / 06</span><span>HOW I THINK</span></div>
+      <div class="story-mindset-grid">
+        <div><p class="story-eyebrow story-reveal">THE PRINCIPLES</p><h2 class="story-heading story-reveal" id="story-mindset-title">Stay curious.<br/><em>Keep creating.</em></h2><p class="story-copy__lead story-reveal">Great products need a balance of creative thinking and practical engineering.</p></div>
+        <div class="story-principles">
+          <article class="story-principle story-reveal"><span>01 / OBSERVE</span><h3>Start with people.</h3><p>Understand the everyday need behind the feature before deciding what to build.</p></article>
+          <article class="story-principle story-reveal"><span>02 / CREATE</span><h3>Make it tangible.</h3><p>Prototype the idea, test the interaction and refine what matters.</p></article>
+          <article class="story-principle story-reveal"><span>03 / IMPROVE</span><h3>Details are the product.</h3><p>Care about accessibility, clarity, performance and the feeling of using the result.</p></article>
+        </div>
+      </div>
+      <div class="story-skills story-reveal" aria-label="Development skills">
+        <span>KOTLIN</span><span>JAVA</span><span>JETPACK COMPOSE</span><span>ANDROID STUDIO</span><span>AI TOOLS</span><span>FIREBASE</span>
+      </div>
+    </div>
+  </section>
+  <section class="story-chapter story-chapter--next" id="chapter-6" data-story-chapter="6" aria-labelledby="story-next-title">
+    <div class="container">
+      <div class="story-chapter__meta"><span>06 / 06</span><span>WHAT'S NEXT</span></div>
+      <p class="story-eyebrow story-reveal">THE STORY IS STILL BEING WRITTEN</p>
+      <h2 class="story-next__title story-reveal" id="story-next-title">Let's build<br/>what's <em>next.</em></h2>
+      <div class="story-next__row story-reveal">
+        <p>I'm open to meaningful Android opportunities, freelance collaborations and conversations about building better digital products.</p>
+        <div class="story-next__links">
+          <a class="story-next__button magnetic" href="mailto:devjeetx7@gmail.com?subject=Let's%20collaborate">Get in touch <span>↗</span></a>
+          <a class="story-next__plain" href="work.html">Explore my work ↗</a>
+          <a class="story-next__plain" href="https://github.com/devjeetx7-synfusion" rel="noopener noreferrer" target="_blank">Find me on GitHub ↗</a>
+        </div>
+      </div>
+      <div class="story-next__signature" aria-hidden="true">DS.</div>
+    </div>
+  </section>
+</main><footer class="story-footer"><div class="container"><div class="story-footer__row"><span>© <span class="current-year">2026</span> Dharmjeet Singh · Made with purpose.</span><div><a href="index.html">Home ↑</a><a href="work.html">Work ↗</a><a href="https://github.com/devjeetx7-synfusion" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://instagram.com/devjeetx7" target="_blank" rel="noopener noreferrer">Instagram ↗</a></div></div></div></footer></body></html>
