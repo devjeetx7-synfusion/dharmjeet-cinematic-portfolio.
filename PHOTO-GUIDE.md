@@ -1,30 +1,39 @@
-# V4 personal image assets (Cinematic Fusion)
+# Image assets & photo slots
 
-The design uses **full-image masked blends**, not circular crops or hard rectangular photo cards. Files are intentionally optional: missing photos fall back to illustrated typography and colors without pretending a stock photo is Dharmjeet.
+The design uses **typographic compositions and masked artwork**, never stock photos pretending to be Dharmjeet.
+Missing photos therefore degrade gracefully: nothing looks broken and no fake portrait is displayed.
 
-Upload under `assets/` with these exact filenames:
+## Current artwork
 
-| Filename | Where used | Ideal photo |
-| --- | --- | --- |
-| `hero-portrait.jpg` | Homepage, text overlays original portrait | Clear 3:4 or 4:5 face-and-upper-body image, plenty of space around subject |
-| `about-me.jpg` | Chapter 01: The Person | Another genuine portrait, waist-up or full-body |
-| `my-journey.jpg` | Chapter 02: The Journey | Coding/workspace candid, vertical composition |
-| `lifestyle.jpg` | Chapter 04: Beyond the Screen | Real landscape outdoor photo, 16:9 suitable |
+| Path | Used for |
+| --- | --- |
+| `assets/*-cover.svg` | Original editorial cover graphics for the eight projects (hero stack, cards, case studies) |
+| `assets/favicon.svg` | Browser favicon (DS monogram) |
+| `assets/apple-touch-icon.png` | 180×180 iOS home-screen icon |
+| `assets/fonts/*.woff2` | Self-hosted Manrope / DM Sans / Instrument Serif (SIL OFL 1.1) |
 
-**Avoid:** images with tiny subjects against very bright skies for the homepage; text overlays cannot fix an inherently small subject. The bike/lake photo works better in Chapter 04.
+The cover graphics are **not** app screenshots. Cards, the hero caption and every case study say so explicitly.
+Replace them only with genuine screenshots supplied by the owner, then update the wording in `js/site.js`
+(`alt` text and the case-study note) and the hero caption in `index.html`.
 
-Use ordinary JPEG sRGB, ideally ~1600 px on the longest side and optimized to roughly 200–500KB. Remove GPS metadata before uploading. Do not rename `.png` as `.jpg` without actual conversion.
+## Adding a genuine portrait
 
-## How to edit carousel content
+A real portrait was never supplied, so the hero uses a deliberate typographic composition instead.
+If you want a photo:
 
-- `about.html` has six `data-v4-panel` slides, arranged into a rotating 3D carousel (not a vertical list).
-- `js/v4.js` manages arrow/swipe/keyboard navigation, side-slide clicks and the active project showcase.
-- `css/v4.css` owns all V4 responsive layout and animation effects.
-- Project data remains in `js/projects.js`; private repository content is not published.
-- This static website remains prepared for later Blogger XML conversion; it is **not** a Blogger theme yet.
+1. Save an approved image as `assets/portrait.webp` (ideally ~1600px tall, 150–350KB, sRGB, GPS metadata removed).
+2. Replace the `hero__art` block in `index.html` with a `<figure>` containing that image plus `width`/`height` attributes.
+3. Keep the text column separate — do not overlay the name on a face.
+4. Do not rename a `.png` to `.webp` without converting it, and never use a stock image of someone else.
 
-## V5 note
+## Editing the six about chapters
 
-For the hero, a clear portrait with a large subject looks better than a distant figure in a landscape shot. The current CSS blends the image edges but cannot invent a closer camera composition. Use `hero-portrait.jpg` for a separate, recognizable photo; reserve the lake/bike photograph for `lifestyle.jpg`.
+- Chapters live in `about.html` as `article.chapter[data-chapter]` elements.
+- `js/site.js` (`initChapters`) handles arrows, dots, keyboard (←/→/Home/End), swipe/drag and the project picker in chapter 03.
+- `css/style.css` (section 14) owns the 3D carousel layout and responsive rules.
+- Project data for the picker comes from `js/projects.js`; private repositories are never linked.
 
-Social icons now appear in the navigation and footer. The Instagram account is active. For Facebook, YouTube and X, replace the placeholder `span.v5-social--pending` with an `a` element only after adding a confirmed personal profile link.
+## Screenshot policy
+
+Only add an image to this repository if it shows the actual product and you own the rights to publish it.
+No placeholder should ever be described as a real screenshot.
