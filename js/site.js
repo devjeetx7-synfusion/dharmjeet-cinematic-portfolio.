@@ -1,61 +1,778 @@
-(()=>{"use strict";const DATA=window.PORTFOLIO||{projects:[]},$=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s)),escape=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])),projectLink=p=>"project.html?slug="+encodeURIComponent(p.slug);
-function cards(ps){return ps.map(p=>'<a class="project-card reveal" href="'+projectLink(p)+'" aria-label="View '+escape(p.name)+' case study"><div class="project-card__visual"><img src="'+p.cover+'" alt="Conceptual cover artwork for '+escape(p.name)+'" width="960" height="740" loading="lazy"><span class="project-card__view">View<br>project ↗</span></div><div class="project-card__footer"><div><p class="eyebrow">'+escape(p.type)+'</p><h3>'+escape(p.name)+'</h3></div><span class="project-card__year">'+p.year+' ↗</span></div></a>').join("")}
-function renderProjects(){const f=$("#featured-grid");if(f)f.innerHTML=cards(DATA.projects.filter(p=>p.featured));const all=$("#all-projects");if(!all)return;function show(filter){const list=DATA.projects.filter(p=>filter==="all"||p.category===filter);all.innerHTML=cards(list);const n=$("#filter-count");if(n)n.textContent=String(list.length).padStart(2,"0");observe()}show("all");$$("[data-filter]").forEach(btn=>btn.addEventListener("click",()=>{$$("[data-filter]").forEach(b=>{b.classList.toggle("active",b===btn);b.setAttribute("aria-pressed",String(b===btn))});show(btn.dataset.filter)}))}
-function renderCase(){const root=$("#case-study");if(!root)return;const slug=new URLSearchParams(location.search).get("slug"),p=DATA.projects.find(x=>x.slug===slug);if(!p){root.innerHTML='<section class="not-found container"><p class="eyebrow">404 / Project not found</p><h1>Not found.</h1><a class="button button-dark" href="work.html">View all projects ↗</a></section>';return}document.title=p.name+" — Dharmjeet Singh";const next=DATA.projects[(DATA.projects.indexOf(p)+1)%DATA.projects.length],buttons=p.links.length?p.links.map(l=>'<a href="'+escape(l.url)+'" target="_blank" rel="noopener noreferrer" class="button button-dark">'+escape(l.label)+' <span>↗</span></a>').join(""):'<p>Private source; a public repository link is not available.</p>';root.innerHTML='<section class="case-hero"><div class="container"><a href="work.html" class="back-link">← All projects</a><div class="case-head"><p class="eyebrow light">'+p.number+' / '+escape(p.type)+'</p><h1 class="case-title">'+escape(p.name)+'<span class="period">.</span></h1><p class="case-tagline">'+escape(p.tagline)+'</p></div><div class="case-cover"><img src="'+p.cover+'" width="960" height="740" alt="Conceptual cover for '+escape(p.name)+'"></div></div></section><section class="section section-light"><div class="container case-detail"><div class="case-lede"><p class="eyebrow">The overview</p><h2>'+escape(p.summary)+'</h2></div><div class="case-data"><div><span>Discipline</span><strong>'+escape(p.type)+'</strong></div><div><span>Year</span><strong>'+escape(p.year)+'</strong></div><div><span>Status</span><strong>'+escape(p.status)+'</strong></div></div><div class="case-text-grid"><div><p class="eyebrow">01 / Challenge</p><h3>The problem.</h3><p>'+escape(p.challenge)+'</p></div><div><p class="eyebrow">02 / Solution</p><h3>The experience.</h3><p>'+escape(p.solution)+'</p></div></div><div class="feature-list">'+p.features.map((x,i)=>'<div class="feature-row"><span>'+String(i+1).padStart(2,"0")+'</span><h3>'+escape(x)+'</h3><span class="feature-symbol">↗</span></div>').join("")+'</div><div class="stack-list"><span class="eyebrow">Built with</span>'+p.stack.map(x=>'<span class="tech-pill">'+escape(x)+'</span>').join("")+'</div><p class="asset-note">This visual is original conceptual artwork, not a screenshot from the actual Android app. Real screenshots can be added later.</p><div class="case-actions">'+buttons+'</div></div></section><a href="'+projectLink(next)+'" class="next-project"><div class="container"><p class="eyebrow light">Next project</p><h2 class="display">'+escape(next.name)+' ↗</h2></div></a>'}
-function nav(){const btn=$(".menu-toggle"),panel=$("#menu-panel");if(!btn||!panel)return;const set=open=>{btn.setAttribute("aria-expanded",String(open));btn.setAttribute("aria-label",open?"Close menu":"Open menu");panel.classList.toggle("is-open",open);panel.setAttribute("aria-hidden",String(!open));panel.inert=!open;document.body.classList.toggle("menu-open",open)};btn.addEventListener("click",()=>set(btn.getAttribute("aria-expanded")!=="true"));panel.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>set(false)));document.addEventListener("keydown",e=>{if(e.key==="Escape")set(false)})}
-function observe(){const items=$$(".reveal:not(.is-observed)");if(!("IntersectionObserver" in window)||matchMedia("(prefers-reduced-motion:reduce)").matches){items.forEach(x=>x.classList.add("is-visible"));return}const io=new IntersectionObserver((entries,observer)=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("is-visible");observer.unobserve(e.target)}}),{threshold:.09});items.forEach(x=>{x.classList.add("is-observed");io.observe(x)})}
-async function gitHub(){const target=$("#github-repos");if(!target)return;let repos=[];try{const ctrl=new AbortController(),t=setTimeout(()=>ctrl.abort(),6000),response=await fetch("https://api.github.com/users/"+DATA.github+"/repos?sort=updated&per_page=100",{signal:ctrl.signal});clearTimeout(t);if(!response.ok)throw Error("API unavailable");const data=await response.json();repos=data.filter(r=>!r.fork).slice(0,6).map(r=>({name:r.name,url:r.html_url,description:r.description||"Public repository",language:r.language||"Code"}));$("#public-repo-count").textContent=String(data.length);$("#github-data-label").textContent="Live public GitHub repositories"}catch(e){repos=["OfficeMitra","TurtleX","Jump-Adventure","SM-Traders","YouTube-Video-Player","WorkDaily-AppShow"].map(name=>({name,url:"https://github.com/"+DATA.github+"/"+name,description:"Public code & development updates",language:"GitHub"}));$("#public-repo-count").textContent="—";$("#github-data-label").textContent="Selected public repositories"}target.innerHTML=repos.map(r=>'<a class="repo-card reveal" target="_blank" rel="noopener noreferrer" href="'+escape(r.url)+'"><div class="repo-card__top"><span>'+escape(r.language)+'</span><span>↗</span></div><h3>'+escape(r.name)+'</h3><p>'+escape(r.description)+'</p></a>').join("");observe()}
-function motion(){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);if($(".hero__word"))gsap.from(".hero__word",{yPercent:110,opacity:.5,ease:"power3.out",duration:1.1,stagger:.13});$$("[data-parallax]").forEach(el=>gsap.to(el,{yPercent:Number(el.dataset.parallax)||-8,ease:"none",scrollTrigger:{trigger:el.closest("section")||el,start:"top bottom",end:"bottom top",scrub:true}}));if($(".horizontal-marquee"))gsap.to(".horizontal-marquee",{xPercent:-18,ease:"none",scrollTrigger:{trigger:".marquee-band",start:"top bottom",end:"bottom top",scrub:true}})}
-function initStory(){
- const page=$(".story-page");if(!page)return;
- const reduced=window.matchMedia("(prefers-reduced-motion:reduce)").matches;
- const chapters=$("[data-story-chapter]"),storyLinks=$("[data-story-link]"),number=$("#story-active"),fill=$(".story-progress__fill");
- const reveals=$(".story-reveal");
- if(!reduced && "IntersectionObserver" in window){
-   reveals.forEach(el=>el.classList.add("story-pending"));
-   const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{
-     if(entry.isIntersecting){entry.target.classList.remove("story-pending");entry.target.classList.add("story-visible");observer.unobserve(entry.target)}
-   })},{threshold:.08,rootMargin:"0px 0px -6% 0px"});
-   reveals.forEach(el=>observer.observe(el));
- }else{reveals.forEach(el=>el.classList.add("story-visible"))}
- let ticking=false,lastActive=0;
- function updateProgress(){
-   ticking=false;
-   let active=1;
-   for(const section of chapters){if(section.getBoundingClientRect().top<=window.innerHeight*.52)active=Number(section.dataset.storyChapter)}
-   active=Math.max(1,Math.min(chapters.length,active));
-   if(active!==lastActive){
-     lastActive=active;
-     if(number)number.textContent=String(active).padStart(2,"0");
-     for(const link of storyLinks){
-       if(Number(link.dataset.storyLink)===active)link.setAttribute("aria-current","step");
-       else link.removeAttribute("aria-current");
-     }
-   }
-   if(fill){
-     const pc=active/Math.max(1,chapters.length)*100;
-     if(window.matchMedia("(max-width:720px)").matches){fill.style.width=pc+"%";fill.style.height="100%"}
-     else{fill.style.height=pc+"%";fill.style.width="100%"}
-   }
- }
- const onScroll=()=>{if(ticking)return;ticking=true;window.requestAnimationFrame(updateProgress)};
- window.addEventListener("scroll",onScroll,{passive:true});
- window.addEventListener("resize",onScroll,{passive:true});
- updateProgress();
- const buttons=$("[data-story-project]"),cover=$("#story-project-cover"),title=$("#story-project-title"),desc=$("#story-project-description"),link=$("#story-project-link"),num=$("#story-project-number");
- function chooseProject(slug){
-   const project=DATA.projects.find(p=>p.slug===slug);
-   if(!project||!cover||!title||!desc||!link)return;
-   buttons.forEach(b=>{const selected=b.dataset.storyProject===slug;b.classList.toggle("is-active",selected);b.setAttribute("aria-pressed",String(selected))});
-   cover.src=project.cover;cover.alt="Original concept artwork for "+project.name+", not an app screenshot";
-   title.textContent=project.name;desc.textContent=project.summary;link.href=projectLink(project);
-   if(num)num.textContent=project.number||"01";
-   // Web Animations API: reliable crossfade motion on direct user interaction.
-   if(!reduced&&typeof cover.animate==="function"){
-     cover.animate([{opacity:.4,transform:"scale(1.035)"},{opacity:1,transform:"scale(1)"}],{duration:470,easing:"cubic-bezier(.16,1,.3,1)"});
-   }
- }
- buttons.forEach(button=>button.addEventListener("click",()=>chooseProject(button.dataset.storyProject)));
-}
-function magnets(){if(!matchMedia("(pointer:fine)").matches||matchMedia("(prefers-reduced-motion:reduce)").matches)return;$$(".magnetic").forEach(b=>{b.addEventListener("pointermove",e=>{const r=b.getBoundingClientRect();b.style.transform="translate("+((e.clientX-r.left-r.width/2)*.14)+"px,"+((e.clientY-r.top-r.height/2)*.14)+"px)"});b.addEventListener("pointerleave",()=>b.style.transform="")})}
-document.addEventListener("DOMContentLoaded",()=>{nav();initStory();renderProjects();renderCase();gitHub();observe();motion();magnets();$$(".current-year").forEach(x=>x.textContent=new Date().getFullYear());const k=$("#local-time");if(k)k.textContent=new Intl.DateTimeFormat("en-IN",{timeZone:"Asia/Kolkata",hour:"2-digit",minute:"2-digit"}).format(new Date())+" IST";document.documentElement.classList.add("is-ready")})})();
+/* =========================================================================
+   Dharmjeet Singh — SynFusion portfolio
+   Dependency-free, accessible interactions. No trackers, no secrets.
+   Everything degrades gracefully without JavaScript where possible.
+   ========================================================================= */
+(function () {
+  "use strict";
+
+  var DATA = window.PORTFOLIO || { projects: [] };
+  var PROJECTS = Array.isArray(DATA.projects) ? DATA.projects : [];
+  var reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var requestFrame = window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : null;
+  var cancelFrame = window.cancelAnimationFrame ? window.cancelAnimationFrame.bind(window) : function () {};
+
+  var $ = function (selector, root) { return (root || document).querySelector(selector); };
+  var $$ = function (selector, root) {
+    return Array.prototype.slice.call((root || document).querySelectorAll(selector));
+  };
+
+  function escapeHtml(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, function (char) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char];
+    });
+  }
+
+  function projectUrl(project) {
+    return "project.html?slug=" + encodeURIComponent(project.slug);
+  }
+
+  function statusMarkup(project) {
+    var tone = project.statusTone || "open";
+    return '<span class="status status--' + escapeHtml(tone) + '">' +
+      '<span class="status__dot" aria-hidden="true"></span>' +
+      escapeHtml(project.status || "Public project") +
+      "</span>";
+  }
+
+  function externalLinks(project) {
+    return (project.links || []).map(function (link) {
+      return '<a href="' + escapeHtml(link.url) + '" target="_blank" rel="noopener noreferrer">' +
+        escapeHtml(link.label) + ' <span aria-hidden="true">↗</span></a>';
+    }).join("");
+  }
+
+  var arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 18 18 6M9 6h9v9" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function projectCard(project, options) {
+    var feature = !!(options && options.feature);
+    var links = externalLinks(project);
+    var chips = (project.stack || []).slice(0, feature ? 6 : 3).map(function (tech) {
+      return '<li class="chip">' + escapeHtml(tech) + "</li>";
+    }).join("");
+
+    return '<article class="card' + (feature ? " card--feature" : "") + ' will-reveal" ' +
+      'style="--accent:' + escapeHtml(project.accent || "#e9b482") + '">' +
+        '<div class="card__media">' +
+          '<img src="' + escapeHtml(project.cover) + '" width="960" height="740" loading="lazy" decoding="async" ' +
+            'alt="Original cover artwork for ' + escapeHtml(project.name) + ', not an app screenshot">' +
+          '<span class="card__view" aria-hidden="true">View case study ' + "↗" + "</span>" +
+        "</div>" +
+        '<div class="card__body">' +
+          '<div class="card__meta">' +
+            '<span class="card__type">' + escapeHtml(project.number + " / " + project.type) + "</span>" +
+            statusMarkup(project) +
+          "</div>" +
+          '<h3 class="card__title">' +
+            '<a class="card__title-link" href="' + projectUrl(project) + '">' + escapeHtml(project.name) +
+            '<span class="sr-only"> — read the case study</span></a>' +
+          "</h3>" +
+          '<p class="card__summary">' + escapeHtml(project.summary) + "</p>" +
+          '<ul class="card__chips" aria-label="Technologies used">' + chips + "</ul>" +
+          '<div class="card__foot">' +
+            '<span class="card__more">Read case study ' + arrow + "</span>" +
+            (links ? '<span class="card__links">' + links + "</span>" : '<span class="muted">Case study</span>') +
+          "</div>" +
+        "</div>" +
+      "</article>";
+  }
+
+  /* --- Header, progress, mobile menu, active section -------------------- */
+  function initHeader() {
+    var header = $("[data-header]");
+    var bar = $("[data-progress]");
+    var ticking = false;
+
+    function update() {
+      ticking = false;
+      var y = window.scrollY || document.documentElement.scrollTop || 0;
+      if (header) header.classList.toggle("is-scrolled", y > 12);
+      if (bar) {
+        var max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        bar.style.transform = "scaleX(" + Math.min(1, Math.max(0, y / max)) + ")";
+      }
+    }
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      if (requestFrame) requestFrame(update);
+      else update();
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    update();
+  }
+
+  function initMenu() {
+    var button = $(".menu-btn");
+    var menu = $("#site-menu");
+    if (!button || !menu) return;
+
+    var interactiveSelector = 'a[href], button:not([disabled])';
+    var lastFocused = null;
+
+    // The panel fades in via a CSS transition, so it only becomes focusable a
+    // frame or two after the class is applied. Retry briefly instead of using a
+    // single fixed delay, and cancel any pending retry when the menu closes.
+    var focusTimers = [];
+    function clearFocusTimers() {
+      focusTimers.forEach(function (id) { window.clearTimeout(id); });
+      focusTimers = [];
+    }
+    function focusIntoMenu() {
+      var first = $(interactiveSelector, menu);
+      if (!first) return;
+      clearFocusTimers();
+      [0, 40, 120, 260].forEach(function (delay) {
+        focusTimers.push(window.setTimeout(function () {
+          if (!menu.classList.contains("is-open")) return;
+          if (menu.contains(document.activeElement)) return;
+          if (getComputedStyle(menu).visibility === "hidden" && delay < 260) return;
+          first.focus({ preventScroll: true });
+        }, delay));
+      });
+    }
+
+    function setOpen(open, returnFocus) {
+      button.setAttribute("aria-expanded", String(open));
+      button.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      menu.classList.toggle("is-open", open);
+      menu.setAttribute("aria-hidden", String(!open));
+      if ("inert" in menu) menu.inert = !open;
+      document.body.classList.toggle("menu-open", open);
+      if (open) {
+        focusIntoMenu();
+      } else {
+        clearFocusTimers();
+        if (returnFocus !== false && lastFocused) lastFocused.focus();
+      }
+    }
+
+    button.addEventListener("click", function () {
+      var open = button.getAttribute("aria-expanded") !== "true";
+      if (open) lastFocused = document.activeElement;
+      setOpen(open);
+    });
+
+    $$("a", menu).forEach(function (link) {
+      link.addEventListener("click", function () { setOpen(false, false); });
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (!menu.classList.contains("is-open")) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setOpen(false);
+        return;
+      }
+      if (event.key !== "Tab") return;
+      var items = $$(interactiveSelector, menu).filter(function (el) {
+        return el.offsetParent !== null;
+      });
+      if (!items.length) return;
+      var first = items[0];
+      var last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 1100 && menu.classList.contains("is-open")) setOpen(false, false);
+    }, { passive: true });
+
+    setOpen(false, false);
+  }
+
+  function initActiveSection() {
+    var links = $$("[data-nav]");
+    if (!links.length || !("IntersectionObserver" in window)) return;
+    var map = {};
+    links.forEach(function (link) { map[link.getAttribute("data-nav")] = link; });
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = map[entry.target.id];
+        if (!link) return;
+        if (entry.isIntersecting) {
+          links.forEach(function (l) { l.classList.remove("is-active"); });
+          link.classList.add("is-active");
+        }
+      });
+    }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+
+    ["github", "contact"].forEach(function (id) {
+      var section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+  }
+
+  /* --- Scroll reveals --------------------------------------------------- */
+  var revealObserver = null;
+
+  function observeReveals(root) {
+    var items = $$(".will-reveal:not(.is-in)", root || document);
+    if (!items.length) return;
+    if (!("IntersectionObserver" in window) || reducedQuery.matches) {
+      items.forEach(function (item) { item.classList.add("is-in"); });
+      return;
+    }
+    if (!revealObserver) {
+      revealObserver = new IntersectionObserver(function (entries, observer) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-in");
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.08, rootMargin: "0px 0px -6% 0px" });
+    }
+    items.forEach(function (item, index) {
+      if (!item.style.getPropertyValue("--reveal-delay")) {
+        item.style.setProperty("--reveal-delay", (index % 3) * 80 + "ms");
+      }
+      revealObserver.observe(item);
+    });
+  }
+
+  function initStaticReveals() {
+    $$("[data-reveal]").forEach(function (element) {
+      element.classList.add("will-reveal");
+    });
+    observeReveals(document);
+    if ("IntersectionObserver" in window && !reducedQuery.matches) {
+      window.setTimeout(function () {
+        $$(".will-reveal:not(.is-in)").forEach(function (element) {
+          var rect = element.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) element.classList.add("is-in");
+        });
+      }, 1200);
+    }
+  }
+
+  /* --- Projects --------------------------------------------------------- */
+  function renderFeatured() {
+    var target = $("#featured-grid");
+    if (!target) return;
+    var featured = PROJECTS.filter(function (project) { return project.featured; });
+    if (!featured.length) {
+      target.innerHTML = '<p class="muted">Project details are being updated.</p>';
+      return;
+    }
+    target.innerHTML = featured.map(function (project, index) {
+      return projectCard(project, { feature: index === 0 });
+    }).join("");
+    observeReveals(target);
+  }
+
+  function renderArchive() {
+    var target = $("#all-projects");
+    if (!target) return;
+    var buttons = $$("[data-filter]");
+    var count = $("#filter-count");
+    var live = $("#archive-live");
+
+    function show(filter) {
+      var list = PROJECTS.filter(function (project) {
+        return filter === "all" || project.category === filter;
+      });
+      target.innerHTML = list.length
+        ? list.map(function (project) { return projectCard(project); }).join("")
+        : '<p class="archive__empty">No projects in this category yet. Try another filter.</p>';
+      if (count) count.textContent = String(list.length).padStart(2, "0");
+      if (live) live.textContent = list.length + " project" + (list.length === 1 ? "" : "s") + " shown";
+      observeReveals(target);
+    }
+
+    buttons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        buttons.forEach(function (other) {
+          other.setAttribute("aria-pressed", String(other === button));
+        });
+        show(button.getAttribute("data-filter"));
+      });
+    });
+
+    show("all");
+  }
+
+  function renderCaseStudy() {
+    var root = $("#case-study");
+    if (!root) return;
+    var slug = new URLSearchParams(window.location.search).get("slug");
+    var project = PROJECTS.filter(function (item) { return item.slug === slug; })[0];
+
+    if (!project) {
+      root.innerHTML = '<section class="case-empty"><div class="container">' +
+        '<p class="eyebrow">404 / Project not found</p>' +
+        '<h1 class="display display--xl">Nothing here<em>.</em></h1>' +
+        '<p class="lede">That case study does not exist. Browse the full project archive instead.</p>' +
+        '<a class="btn btn--primary" href="work.html">View all projects ' + arrow + "</a>" +
+        "</div></section>";
+      return;
+    }
+
+    document.title = project.name + " — Case study — Dharmjeet Singh";
+    var description = project.summary;
+    var metaDescription = $('meta[name="description"]');
+    if (metaDescription) metaDescription.setAttribute("content", description);
+    var ogTitle = $('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute("content", project.name + " — Dharmjeet Singh");
+    var ogDescription = $('meta[property="og:description"]');
+    if (ogDescription) ogDescription.setAttribute("content", description);
+
+    var next = PROJECTS[(PROJECTS.indexOf(project) + 1) % PROJECTS.length];
+    var actions = (project.links || []).length
+      ? (project.links || []).map(function (link) {
+          return '<a class="btn btn--primary" href="' + escapeHtml(link.url) + '" target="_blank" rel="noopener noreferrer">' +
+            escapeHtml(link.label) + " " + arrow + "</a>";
+        }).join("")
+      : '<p class="case-private">The source for this project is private, so there is no public repository or store link to share. The case study above reflects what can be described publicly.</p>';
+
+    var features = (project.features || []).map(function (feature, index) {
+      return '<div class="feature-row"><span>' + String(index + 1).padStart(2, "0") + "</span>" +
+        "<h3>" + escapeHtml(feature) + "</h3>" +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+    }).join("");
+
+    var stack = (project.stack || []).map(function (tech) {
+      return '<li class="chip">' + escapeHtml(tech) + "</li>";
+    }).join("");
+
+    root.innerHTML =
+      '<section class="case-hero"><div class="container">' +
+        '<a class="case-back" href="work.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg> All projects</a>' +
+        '<p class="eyebrow">' + escapeHtml(project.number + " / " + project.type) + "</p>" +
+        '<h1 class="case-title">' + escapeHtml(project.name) + '<span class="dot">.</span></h1>' +
+        '<p class="case-tagline">' + escapeHtml(project.tagline) + "</p>" +
+        '<div class="case-meta">' + statusMarkup(project) +
+          '<span class="chip">' + escapeHtml(project.year) + "</span>" +
+          (project.stack || []).slice(0, 4).map(function (tech) { return '<span class="chip">' + escapeHtml(tech) + "</span>"; }).join("") +
+        "</div>" +
+        '<figure class="case-cover">' +
+          '<img src="' + escapeHtml(project.cover) + '" width="960" height="740" alt="Original cover artwork for ' + escapeHtml(project.name) + '" decoding="async">' +
+          '<figcaption class="case-cover__note"><span>Original cover artwork — not an app screenshot</span><span>Concept &amp; build: Dharmjeet Singh</span></figcaption>' +
+        "</figure>" +
+      "</div></section>" +
+      '<section class="case-body"><div class="container"><div class="case-inner">' +
+        '<h2 class="case-overview">' + escapeHtml(project.summary) + "</h2>" +
+        '<dl class="case-data">' +
+          "<div><dt>Discipline</dt><dd>" + escapeHtml(project.type) + "</dd></div>" +
+          "<div><dt>Year</dt><dd>" + escapeHtml(project.year) + "</dd></div>" +
+          "<div><dt>Status</dt><dd>" + escapeHtml(project.status) + "</dd></div>" +
+        "</dl>" +
+        '<div class="case-cols">' +
+          "<div><h2>The problem</h2><p>" + escapeHtml(project.challenge) + "</p></div>" +
+          "<div><h2>The approach</h2><p>" + escapeHtml(project.solution) + "</p></div>" +
+        "</div>" +
+        '<h2 class="case-section-title">What it does</h2>' +
+        '<div class="feature-list">' + features + "</div>" +
+        '<h2 class="case-section-title">Built with</h2>' +
+        '<ul class="case-tags">' + stack + "</ul>" +
+        '<div class="case-actions">' + actions + "</div>" +
+        '<p class="case-note">Every cover image on this site is original editorial artwork, not a screenshot of a running application. Real screenshots will replace them only when the owner supplies them.</p>' +
+      "</div></div></section>" +
+      (next && next.slug !== project.slug
+        ? '<a class="next-case" href="' + projectUrl(next) + '"><div class="container next-case__inner"><div>' +
+            '<p class="next-case__label">Next case study</p>' +
+            '<h2 class="next-case__title">' + escapeHtml(next.name) + "</h2></div>" +
+            '<span class="next-case__arrow" aria-hidden="true">' + arrow + "</span></div></a>"
+        : "");
+  }
+
+  /* --- GitHub ----------------------------------------------------------- */
+  function fallbackRepos() {
+    return PROJECTS.filter(function (project) {
+      return !project.codePrivate && (project.links || []).some(function (link) { return link.kind === "github"; });
+    }).slice(0, 6).map(function (project) {
+      var link = (project.links || []).filter(function (item) { return item.kind === "github"; })[0];
+      return {
+        name: project.name,
+        url: link ? link.url : "https://github.com/" + DATA.github,
+        description: project.summary,
+        language: (project.stack || [])[0] || "Code"
+      };
+    });
+  }
+
+  function repoCard(repo) {
+    return '<a class="repo will-reveal" href="' + escapeHtml(repo.url) + '" target="_blank" rel="noopener noreferrer">' +
+      '<div class="repo__top"><span class="repo__lang"><i data-lang="' + escapeHtml(repo.language || "") + '" aria-hidden="true"></i>' + escapeHtml(repo.language || "Code") + "</span>" +
+      '<span aria-hidden="true">' + arrow + "</span></div>" +
+      '<h3 class="repo__name">' + escapeHtml(repo.name) + "</h3>" +
+      '<p class="repo__desc">' + escapeHtml(repo.description || "Public repository on GitHub.") + "</p>" +
+      '<span class="repo__go">View repository <span aria-hidden="true">↗</span></span></a>';
+  }
+
+  function initGitHub() {
+    var target = $("#github-repos");
+    if (!target) return;
+    var count = $("#public-repo-count");
+    var label = $("#github-data-label");
+    var account = DATA.github || "devjeetx7-synfusion";
+    var cacheKey = "synfusion:repos:v2";
+    var controller = null;
+    var timeoutId = null;
+
+    function paint(repos, live, total) {
+      target.innerHTML = repos.length
+        ? repos.map(repoCard).join("")
+        : '<p class="repos__status">Public repositories could not be loaded right now. Use the GitHub link below to browse them directly.</p>';
+      if (count) count.textContent = total ? String(total) : "—";
+      if (label) label.textContent = live ? "Live from the public GitHub API" : "Selected public repositories";
+      var status = $("#github-status");
+      if (status) status.textContent = live ? "Loaded " + repos.length + " public repositories from GitHub." : "Showing selected public repositories.";
+      observeReveals(target);
+    }
+
+    target.innerHTML = '<p class="repos__status" aria-busy="true">Fetching public repositories from GitHub…</p>';
+
+    var cached = null;
+    try {
+      var raw = window.sessionStorage.getItem(cacheKey);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (parsed && parsed.at && Date.now() - parsed.at < 15 * 60 * 1000 && Array.isArray(parsed.repos)) cached = parsed;
+      }
+    } catch (error) { cached = null; }
+
+    if (cached) {
+      paint(cached.repos, true, cached.total);
+    }
+
+    if (!("fetch" in window)) {
+      if (!cached) paint(fallbackRepos(), false, 0);
+      return;
+    }
+
+    controller = new AbortController();
+    timeoutId = window.setTimeout(function () { controller.abort(); }, 7000);
+
+    fetch("https://api.github.com/users/" + encodeURIComponent(account) + "/repos?sort=pushed&per_page=100", {
+      signal: controller.signal,
+      headers: { Accept: "application/vnd.github+json" }
+    })
+      .then(function (response) {
+        if (!response.ok) throw new Error("GitHub API responded " + response.status);
+        return response.json();
+      })
+      .then(function (data) {
+        if (!Array.isArray(data)) throw new Error("Unexpected GitHub response");
+        var repos = data
+          .filter(function (repo) { return !repo.fork && !repo.archived; })
+          .slice(0, 6)
+          .map(function (repo) {
+            return {
+              name: repo.name,
+              url: repo.html_url,
+              description: repo.description || "Public repository — source code and updates.",
+              language: repo.language || "Code"
+            };
+          });
+        paint(repos, true, data.length);
+        try {
+          window.sessionStorage.setItem(cacheKey, JSON.stringify({ at: Date.now(), repos: repos, total: data.length }));
+        } catch (error) { /* storage may be unavailable — ignore */ }
+      })
+      .catch(function () {
+        if (!cached) paint(fallbackRepos(), false, 0);
+      })
+      .then(function () {
+        window.clearTimeout(timeoutId);
+        controller = null;
+      });
+  }
+
+  /* --- Marquee ---------------------------------------------------------- */
+  function initMarquee() {
+    var track = $("[data-marquee]");
+    if (!track || !requestFrame || reducedQuery.matches) return;
+    var group = $(".marquee__group", track);
+    if (!group) return;
+    var offset = 0;
+    var last = 0;
+    var frameId = null;
+    var width = 0;
+    var speed = 26;
+
+    function measure() { width = group.getBoundingClientRect().width; }
+    function frame(now) {
+      if (!last) last = now;
+      var delta = Math.min(now - last, 64);
+      last = now;
+      if (width > 0) {
+        offset = (offset + speed * (delta / 1000)) % width;
+        track.style.transform = "translate3d(" + (-offset).toFixed(2) + "px,0,0)";
+      }
+      frameId = requestFrame(frame);
+    }
+    function start() {
+      if (frameId !== null) return;
+      last = 0;
+      frameId = requestFrame(frame);
+    }
+    function stop() {
+      if (frameId !== null) cancelFrame(frameId);
+      frameId = null;
+    }
+
+    measure();
+    window.addEventListener("resize", measure, { passive: true });
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && !document.hidden) start();
+          else stop();
+        });
+      }, { threshold: 0 });
+      io.observe(track);
+    } else {
+      start();
+    }
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stop();
+      else {
+        var rect = track.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) start();
+      }
+    });
+  }
+
+  /* --- About chapters --------------------------------------------------- */
+  function initChapters() {
+    var viewport = $(".chapters__viewport");
+    var stage = $("#chapters-stage");
+    if (!viewport || !stage) return;
+    var slides = $$("[data-chapter]", stage);
+    var dots = $$("[data-chapter-go]");
+    var current = $("#chapter-current");
+    var total = $("#chapter-total");
+    var count = slides.length;
+    if (!count) return;
+
+    var active = 0;
+    if (total) total.textContent = String(count).padStart(2, "0");
+
+    function setInteractive(slide) {
+      var isActive = slide.getAttribute("data-pos") === "0";
+      slide.setAttribute("aria-hidden", String(!isActive));
+      if ("inert" in slide) slide.inert = !isActive;
+      $$("a, button", slide).forEach(function (el) {
+        if (isActive) {
+          el.removeAttribute("tabindex");
+        } else {
+          el.setAttribute("tabindex", "-1");
+        }
+      });
+    }
+
+    function go(index, updateHash) {
+      active = ((index % count) + count) % count;
+      slides.forEach(function (slide, i) {
+        var distance = (i - active + count) % count;
+        if (distance > count / 2) distance -= count;
+        slide.setAttribute("data-pos", String(distance));
+        setInteractive(slide);
+      });
+      dots.forEach(function (dot, i) {
+        if (i === active) dot.setAttribute("aria-current", "step");
+        else dot.removeAttribute("aria-current");
+      });
+      if (current) current.textContent = String(active + 1).padStart(2, "0");
+      if (updateHash !== false) {
+        try {
+          window.history.replaceState(null, "", "#chapter-" + (active + 1));
+        } catch (error) { /* file:// or restricted history — ignore */ }
+      }
+    }
+
+    var next = $("#chapter-next");
+    var prev = $("#chapter-prev");
+    if (next) next.addEventListener("click", function () { go(active + 1); });
+    if (prev) prev.addEventListener("click", function () { go(active - 1); });
+    dots.forEach(function (dot) {
+      dot.addEventListener("click", function () {
+        go(Number(dot.getAttribute("data-chapter-go")) || 0);
+      });
+    });
+
+    stage.addEventListener("click", function (event) {
+      var slide = event.target.closest("[data-chapter]");
+      if (!slide) return;
+      var position = Number(slide.getAttribute("data-pos"));
+      if (position === 1 || position === -1) {
+        event.preventDefault();
+        go(active + position);
+      }
+    });
+
+    viewport.addEventListener("keydown", function (event) {
+      if (event.altKey || event.ctrlKey || event.metaKey) return;
+      if (event.key === "ArrowRight") { event.preventDefault(); go(active + 1); }
+      else if (event.key === "ArrowLeft") { event.preventDefault(); go(active - 1); }
+      else if (event.key === "Home") { event.preventDefault(); go(0); }
+      else if (event.key === "End") { event.preventDefault(); go(count - 1); }
+    });
+
+    var start = null;
+    viewport.addEventListener("touchstart", function (event) {
+      var touch = event.touches[0];
+      if (!touch) return;
+      start = { x: touch.clientX, y: touch.clientY };
+    }, { passive: true });
+
+    viewport.addEventListener("touchend", function (event) {
+      if (!start) return;
+      var touch = event.changedTouches[0];
+      start = null;
+      if (!touch) return;
+      var dx = touch.clientX - start.x;
+      var dy = touch.clientY - start.y;
+      if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+      go(active + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+
+    var mouseStart = null;
+    viewport.addEventListener("pointerdown", function (event) {
+      if (event.pointerType !== "mouse" || event.button !== 0) return;
+      if (event.target.closest("button, a")) return;
+      mouseStart = { x: event.clientX, y: event.clientY };
+    });
+    viewport.addEventListener("pointerup", function (event) {
+      if (!mouseStart || event.pointerType !== "mouse") return;
+      var dx = event.clientX - mouseStart.x;
+      var dy = event.clientY - mouseStart.y;
+      mouseStart = null;
+      if (Math.abs(dx) < 56 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+      go(active + (dx < 0 ? 1 : -1));
+    });
+    viewport.addEventListener("pointercancel", function () { mouseStart = null; });
+
+    var pickers = $$("[data-chapter-project]", stage);
+    var projectImage = $("#chapter-project-img");
+    var projectLink = $("#chapter-project-link");
+    pickers.forEach(function (button) {
+      button.addEventListener("click", function () {
+        var slug = button.getAttribute("data-chapter-project");
+        var project = PROJECTS.filter(function (item) { return item.slug === slug; })[0];
+        if (!project) return;
+        pickers.forEach(function (other) {
+          other.setAttribute("aria-pressed", String(other === button));
+        });
+        if (projectImage) {
+          projectImage.src = project.cover;
+          projectImage.alt = "Concept cover artwork for " + project.name + ", not an app screenshot";
+        }
+        if (projectLink) {
+          projectLink.href = projectUrl(project);
+          projectLink.innerHTML = "Open " + escapeHtml(project.name) + " case study " + arrow;
+        }
+      });
+    });
+
+    window.addEventListener("hashchange", function () {
+      var match = window.location.hash.match(/^#chapter-([0-9]+)$/);
+      if (match) go(Number(match[1]) - 1, false);
+    });
+
+    var hashMatch = window.location.hash.match(/^#chapter-([0-9]+)$/);
+    go(hashMatch ? Number(hashMatch[1]) - 1 : 0, false);
+  }
+
+  /* --- Copy email ------------------------------------------------------- */
+  function initCopyEmail() {
+    var buttons = $$("[data-copy-email]");
+    if (!buttons.length) return;
+    var email = (DATA.contact || "devjeetx7@gmail.com").trim();
+    var feedback = $("#copy-feedback");
+
+    function legacyCopy(text) {
+      var textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.top = "-1000px";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (error) { ok = false; }
+      document.body.removeChild(textarea);
+      return ok;
+    }
+
+    function announce(message, isError) {
+      if (!feedback) return;
+      feedback.textContent = message;
+      feedback.classList.toggle("is-error", !!isError);
+      window.clearTimeout(feedback._timer);
+      feedback._timer = window.setTimeout(function () {
+        feedback.textContent = "";
+        feedback.classList.remove("is-error");
+      }, 4500);
+    }
+
+    buttons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        var done = function (ok) {
+          if (ok) announce("Email copied to clipboard — " + email);
+          else announce("Copy failed. The address is " + email, true);
+        };
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(email).then(function () { done(true); }).catch(function () { done(legacyCopy(email)); });
+        } else {
+          done(legacyCopy(email));
+        }
+      });
+    });
+  }
+
+  /* --- Small utilities -------------------------------------------------- */
+  function initUtilities() {
+    $$("[data-year]").forEach(function (node) { node.textContent = String(new Date().getFullYear()); });
+    $$("[data-project-count]").forEach(function (node) { node.textContent = String(PROJECTS.length); });
+
+    var clock = $("#local-time");
+    if (clock) {
+      var updateClock = function () {
+        try {
+          clock.textContent = new Intl.DateTimeFormat("en-IN", {
+            timeZone: "Asia/Kolkata",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+          }).format(new Date()) + " IST";
+        } catch (error) {
+          clock.textContent = "IST";
+        }
+      };
+      updateClock();
+      window.setInterval(updateClock, 60000);
+    }
+  }
+
+  function init() {
+    initHeader();
+    initMenu();
+    initActiveSection();
+    renderFeatured();
+    renderArchive();
+    renderCaseStudy();
+    initGitHub();
+    initChapters();
+    initCopyEmail();
+    initMarquee();
+    initStaticReveals();
+    initUtilities();
+    document.documentElement.classList.add("is-ready");
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
+  }
+})();

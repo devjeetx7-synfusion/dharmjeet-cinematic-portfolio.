@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#202126"/><text x="7" y="44" font-family="Arial" font-size="29" font-weight="bold" fill="#fff">DS</text><circle cx="54" cy="48" r="4" fill="#455ce9"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="SynFusion — Dharmjeet Singh">
+  <rect width="64" height="64" rx="16" fill="#0b0d10"/>
+  <rect x="0.75" y="0.75" width="62.5" height="62.5" rx="15.25" fill="none" stroke="#e9b482" stroke-opacity=".38" stroke-width="1.5"/>
+  <text x="9" y="43" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#f5f2ec" letter-spacing="-1.2">DS</text>
+  <circle cx="51" cy="43" r="4" fill="#e9b482"/>
+</svg>

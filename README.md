@@ -1,132 +1,112 @@
 # Dharmjeet Singh — Cinematic Portfolio
 
-A cinematic, responsive, **Blogger-conversion-friendly** developer portfolio for Dharmjeet Singh / SynFusion.
+A dark, cinematic developer portfolio for **Dharmjeet Singh** (SynFusion) — Android developer based in Bihar, India.
 
-**Concept:** editorial typography, smooth scroll-triggered motion, original project-cover illustrations, real GitHub links, verified projects, and accessible native navigation. The visual direction is inspired by modern smooth-scroll portfolios, but this code, composition, typography, colors and artwork are original.
+Static HTML, one design-system stylesheet and one dependency-free JavaScript module. No framework, no build step, no CDN requirement, no trackers.
 
-> **Status:** Static website V5: compact cinematic hero, touch-swipable six-chapter About carousel, responsive navigation and social icons. Blogger conversion remains a separate phase. **Not yet a Blogger XML theme**. The Blogger adapter and Blogger Post/Page data integration belong to the next migration phase.
+> **Status:** static site, ready for GitHub Pages. Blogger conversion remains a later phase — this repository is **not** a Blogger XML theme (see `BLOGGER-CONVERSION.md`).
 
 ## Pages
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | Cinematic hero, story, featured projects, public GitHub repositories, expertise, contact |
-| `work.html` | All projects with category filters |
-| `project.html?slug=...` | Individual dynamically rendered project case studies |
-| `about.html` | Six animated story chapters, photo slots, project switcher, scroll progress and personal journey |
-| `js/projects.js` | Verified portfolio content — edit projects here |
-| `js/site.js` | Rendering, accessible menu, GitHub API, scroll reveal, GSAP animations |
-| `css/style.css` | Responsive stylesheet and visual design tokens |
-| `assets/*-cover.svg` | Original abstract editorial graphics (NOT app screenshots) |
-| `BLOGGER-CONVERSION.md` | Practical Blogger migration roadmap |
+| `index.html` | Cinematic hero, About, featured projects, toolkit, journey, live GitHub repositories, contact |
+| `work.html` | Filterable archive of all 8 projects |
+| `project.html?slug=…` | Case study rendered from `js/projects.js` |
+| `about.html` | Editorial about story + six-chapter 3D carousel |
+| `js/projects.js` | Verified project, skill, journey and social content — edit content here |
+| `js/site.js` | Rendering, navigation, reveals, GitHub API, carousel, copy-email |
+| `css/style.css` | Complete design system (tokens, layout, components, motion, responsive) |
+| `assets/` | Project cover artwork, favicon, Apple touch icon, self-hosted fonts |
+| `BLOGGER-CONVERSION.md` | Notes for a future Blogger migration |
 
 ## Tech stack
 
-- HTML5, vanilla CSS and JavaScript, with **no framework or build step**.
-- GSAP 3.15.0 and ScrollTrigger via CDN (animations are optional; site works without them).
-- GitHub public REST API (client-side, no private token, 6-second request timeout and static fallback).
-- Google Fonts with system fallbacks.
-- Hosting: any static server / GitHub Pages.
+- **HTML5** + semantic landmarks, one `<h1>` per page, skip link.
+- **CSS** — custom properties, `clamp()` type scale, CSS grid, `prefers-reduced-motion`, `scroll-behavior: smooth`.
+- **Vanilla JS (ES2017)** — IntersectionObserver reveals, requestAnimationFrame marquee, AbortController-based GitHub fetch with cache and fallback.
+- **Fonts** — Manrope, DM Sans and Instrument Serif, self-hosted WOFF2 (SIL OFL 1.1, see `assets/fonts/OFL.txt`). No Google Fonts request at runtime.
+- **GitHub REST API** — public, unauthenticated, 7s timeout, 15-minute `sessionStorage` cache, static fallback.
+- **Hosting** — any static file server, or GitHub Pages (`.github/workflows/pages.yml`).
 
 ## Local preview
 
-From the project folder:
-
 ```bash
-python -m http.server 8000
+python3 -m http.server 8000
+# open http://localhost:8000/
 ```
 
-Open `http://localhost:8000/` in your browser. Avoid `file://` for normal testing because external API requests and some browser policies may behave differently.
+Any static server works (`npx serve`, VS Code Live Server, …). Use `http://`, not `file://`, so the GitHub API request and font loading behave normally.
 
-## Publishing with GitHub Pages
+## Testing
 
-1. Create a **public** GitHub repository named `dharmjeet-cinematic-portfolio` (or another name).
-2. Upload or push all files **including the `assets/`, `css/` and `js/` folders**.
-3. In **Settings → Pages**, select **Deploy from a branch**, `main`, `/ (root)`, and save; or use the included GitHub Actions Pages workflow after enabling Actions-based Pages deployment.
-4. GitHub will provide a URL similar to `https://USERNAME.github.io/REPOSITORY/` once the site is deployed. **Do not assume it exists before publishing.**
-
-### Push through Git (after creating the empty GitHub repo)
+There is no build step, so "testing" means static checks plus browser checks:
 
 ```bash
-git init
-git add .
-git commit -m "feat: launch cinematic developer portfolio"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/dharmjeet-cinematic-portfolio.git
-git push -u origin main
+# JavaScript syntax
+node --check js/site.js && node --check js/projects.js
+
+# Optional: DOM-level interaction tests with jsdom / real browser screenshots
+# (test scripts are not committed; they were run locally during development)
 ```
 
-Replace `YOUR_USERNAME` with your actual GitHub login. The verified account during preparation was `devjeetx7-synfusion`.
+Verified during the last pass:
 
-## Editing projects
+- All four pages parse without HTML nesting errors, duplicate IDs or broken internal links.
+- No console errors or failed requests (except a TLS-intercepted GitHub API call in the sandbox — the site degraded to the static repository list as designed).
+- Navigation, mobile menu (focus move, Escape, focus return, scroll lock), filters, carousel (arrows, dots, keyboard, swipe, project picker), copy-email feedback and case-study routing all exercised in a real Chromium build.
+- Layout checked at 320, 360, 390, 768, 1024, 1440 and 1920px: no horizontal overflow, no clipped body text.
+- `prefers-reduced-motion: reduce` renders all content with animations disabled.
+- Cumulative layout shift measured at 0 on a mobile viewport during a local run.
 
-Edit `js/projects.js`:
+Lighthouse was **not** run — no verified score is claimed.
 
-- `featured: true` displays the project on the homepage.
-- `category` controls the project filter.
-- `links` contains only public destinations, such as Google Play and public GitHub URLs.
-- **Never put private tokens, private GitHub source URLs, keystores, passwords or personal data into this file.**
-- New project cover art can replace `assets/<slug>-cover.svg` or use a genuine screenshot supplied by the owner.
+## Editing content
 
-The 8 case-study entries are based on verified README/project details and product listing information, not imaginary statistics.
+Everything editorial lives in `js/projects.js`:
 
-## Project media and identity
+- `projects[]` — `featured: true` shows a project on the homepage (the first featured project gets the large card).
+- `status` / `statusTone` — `live`, `open`, `building` or `private`; the tone only changes the status dot colour.
+- `links[]` — public destinations only (Google Play listing or public GitHub repository). Use `kind: "github"` for repository links.
+- `skills[]`, `journey[]`, `socials[]` — toolkit cards, timeline, footer/menu social links.
 
-- The eight built-in project covers are **original editorial illustrations**, not Android screenshots or claims about the running application UI.
-- The original portrait photo was not available as a file during this build. The hero uses a motion-ready **DS monogram** instead of inventing a face. To add a photo, save the approved image to `assets/portrait.webp` and modify the hero/About markup and CSS; do not use an unrelated person's photo.
-- Private WorkDaily and CinePrompt repository sources are intentionally not displayed. WorkDaily's official public Google Play listing is linked instead.
-- GitHub repo counts and stars only come from live GitHub public API; if the API fails the site displays selected public links without fabricated stats.
+**Never** add tokens, keystores, private repository URLs or client data to `js/projects.js` or any other front-end file.
 
-## Performance, privacy and accessibility
+## Assets
 
-- Native browser scrolling (no forced scroll hijacking).
-- Intersections and GPU-friendly transforms for most reveals.
-- `prefers-reduced-motion` disables unnecessary animations.
-- Keyboard navigation, skip-to-content and Escape-to-close menu.
-- Respect public GitHub API rate limits. Public API requests can fail or be throttled; fallback is available.
-- No cookies, analytics, trackers or form-submission backends in v1.
-- Contact uses a `mailto:` action; it does not pretend to transmit form data.
+- `assets/*-cover.svg` are **original editorial cover graphics** (typographic compositions), not Android screenshots and not marketing claims about app UI. Cards, the hero and case studies label them as such.
+- `assets/favicon.svg` and `assets/apple-touch-icon.png` are the DS mark in the site palette.
+- A real portrait was never supplied. The hero intentionally uses a typographic composition rather than a stock photo. To add a genuine photo, place `assets/portrait.webp` and update the hero markup; do not use an unrelated person's photo. See `PHOTO-GUIDE.md`.
+- When real app screenshots arrive, replace the matching `cover` value in `js/projects.js` and update the "not an app screenshot" wording in `js/site.js` / the hero caption.
 
-## Further improvements
+## Accessibility & performance notes
 
-- Supply verified app screenshots and your approved headshot.
-- Add Play Store links for other confirmed published apps.
-- Convert routing, content and XML markup into Blogger (`BLOGGER-CONVERSION.md`).
-- Optional resume PDF, journal posts, Open Graph image and custom domain after content review.
+- Semantic sections, `<main>`, `<nav aria-label>`, `<header>`/`<footer>` landmarks, skip link.
+- Visible `:focus-visible` rings, keyboard-operable carousel and filters, `aria-pressed`/`aria-current` state, live regions for async results.
+- Mobile menu moves focus into the panel, traps Tab, closes on Escape and returns focus.
+- Tap targets ≥ 42px for controls; inline footer links are ≥ 28×36px.
+- Reduced motion: entrance animations, marquee, parallax and transitions are disabled.
+- Images are SVG (no raster payload), `loading="lazy"` below the fold, explicit `width`/`height` to prevent layout shift; the hero cover is `fetchpriority="high"`.
+- One stylesheet, one script, self-hosted fonts with `font-display: swap` and two font preloads.
+- Scroll handlers are passive and throttled through `requestAnimationFrame`; the marquee stops when off-screen or the tab is hidden.
 
-## Attribution / licensing
+## Deployment
 
-Site source code and original editorial graphics: MIT (`LICENSE`). Font families available via Google Fonts are subject to their respective licenses. GSAP, hosted separately on a CDN, uses its own license and is not redistributed in this repository. All project names belong to their respective owners. No Dennis Snellenberg code, images or brand assets have been copied.
+1. Push this branch/repository to GitHub.
+2. **Settings → Pages → Deploy from a branch → `main` / root**, or enable the included Actions workflow.
+3. Replace the repository-specific URL in the docs if the final URL differs.
 
-## What's new in V3
+A custom domain is not configured, so no canonical URL is declared (adding one before the domain exists would be incorrect).
 
-- Chapter-based About experience: person, journey, projects, lifestyle, mindset, next chapter.
-- Interactive 4-project selector using verified portfolio content.
-- Responsive scroll chapter progress, reveal animations and reduced-motion support.
-- Redesigned homepage portrait layout: text and image never overlay on mobile.
-- Separate portrait assets to replace the disliked old lake image. See [PHOTO-GUIDE.md](PHOTO-GUIDE.md).
-- Warm Amber + Charcoal + Ivory design system; no bright blue accents.
+## Remaining manual steps
 
-**Photo note:** All personal image filenames are optional, and no photos were actually supplied/committed in V3. Purpose-built fallbacks display until you upload them.
+- Supply a genuine portrait photo and, if desired, real app screenshots.
+- Confirm the X (`@getsynfusion`) profile is the intended public account — it comes from the GitHub profile metadata.
+- Confirm the Telegram (`@synfusion_coder`) and Instagram (`@devjeetx7`) links are the public accounts to display.
+- Optional: custom domain + `sitemap.xml`/`robots.txt` once the final URL is known.
 
+## License
 
-## V4 Cinematic Fusion — October 2026
-
-- Homepage: a single full-bleed charcoal scene; independent text and image layers; image-edge radial masking and lower fade; responsive overlaid portrait typography.
-- About: six chapters in a rotating 3D carousel instead of a vertical list. Keyboard arrows/Home/End, touch swipe, previous/next, progress pips and adjacent-card taps.
-- Featured project preview inside Chapter 03: actual project metadata from `js/projects.js` (illustrative artwork clearly marked, no fake screenshots).
-- No extra framework or backend was introduced. Browser code remains HTML/CSS/vanilla JS for later Blogger conversion.
-- V4 implementation is in `css/v4.css`, `js/v4.js`, `about.html`, and `index.html`. See `PHOTO-GUIDE.md` for genuine images and filenames.
-- V4 personal photographs have not been committed. Photo fallback artwork displays until `assets/hero-portrait.jpg`, `assets/about-me.jpg`, `assets/my-journey.jpg`, and `assets/lifestyle.jpg` are uploaded.
-
-
-## V5 Mobile & UI Refinement
-
-- Removed oversized hero-to-introduction gradient spacer, reduced section padding and cut repetitive copy.
-- Homepage headline now two lines. Image blending is masked at the edges; image and typography remain independent layers.
-- About carousel uses approximately 480px minimum mobile cards and 525px desktop cards (content can expand for accessibility).
-- Swipe gestures use `touchstart`/`touchend` with a horizontal threshold and preserve vertical scrolling. Mouse drag, arrow keys, carousel dots and arrow buttons continue to work.
-- All page menus have a hamburger-to-cross state, corrected z-index and touch-friendly controls.
-- Instagram is linked to the known account; Facebook, YouTube and X icons are decorative, disabled placeholders until their real public profile URLs are supplied. Do not invent links or copy URLs from unrelated profiles.
-- Add all future modifications to `css/v5.css` (loaded last after the older design styles) or consolidate carefully when migrating to Blogger.
-- Personal image files still require owner uploads. See PHOTO-GUIDE.md.
+Site source code and original editorial graphics: MIT (`LICENSE`).
+Bundled font files: SIL Open Font License 1.1 (`assets/fonts/OFL.txt`).
+Project names and store listings belong to their respective owners.
